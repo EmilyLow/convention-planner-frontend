@@ -5,6 +5,8 @@ import Box from '@material-ui/core/Box';
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -38,11 +40,7 @@ const useStyles = makeStyles( theme => ({
 function App(props) {
 
   const classes = useStyles();
-  //Alt
-  // const match = useRouteMatch();
-  // const location = useLocation();
 
-  // let location = useLocation();
 
 
   let [tabValue, setTabValue] = new React.useState(0);
@@ -58,11 +56,14 @@ function App(props) {
       <Route path="/"
         render={(history) => (
         <AppBar position="static" color="primary">
+          <Typography variant="h6">NecronomiCon</Typography>
+          {/* <Button color="secondary">Log In</Button> */}
           <Tabs value={history.location.pathname !== "/" ? history.location.pathname
                       : false} color="secondary">
             <Tab label = "Core" value={"/"} component = {Link} to={"/"}/>
             <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"} />
             <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/>
+            <Tab label = "Your Schedule" value={"/your-schedule"} component = {Link} to={"/your-schedule"}/>
           </Tabs>
         </AppBar>
       )}
