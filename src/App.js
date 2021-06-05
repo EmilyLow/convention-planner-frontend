@@ -12,6 +12,7 @@ import {
   Switch,
   Route,
   Link,
+  useLocation,
   useRouteMatch,
   useParams
 } from "react-router-dom";
@@ -24,6 +25,12 @@ import Games from "./components/Games";
 import UserSchedule from "./components/UserSchedule"
 
 function App() {
+
+  //Alt
+  // const match = useRouteMatch();
+  // const location = useLocation();
+
+  // let location = useLocation();
 
 
   let [tabValue, setTabValue] = new React.useState(0);
@@ -59,14 +66,22 @@ function App() {
           <Link to="/your-schedule">Your Schedule</Link>
         </li>
       </ul> */}
-      
+      <Route path="/"
+        render={(history) => (
+
+
+
+        
       <AppBar position="static" color="default">
-        <Tabs value={tabValue} onChange={handleTabChange}>
-          <Tab label = "Core" component = {Link} to={"/"}/>
-          <Tab label = "Talks" component = {Link} to={"/talks"}/>
-          <Tab label = "Games" component = {Link} to={"/games"}/>
+        <Tabs value={history.location.pathname !== "/" ? history.location.pathname
+                    : false}>
+          <Tab label = "Core" value={""} component = {Link} to={"/"}/>
+          <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"}/>
+          <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/>
         </Tabs>
       </AppBar>
+      )}
+      />
 
       <Switch>
         <Route path="/talks">
