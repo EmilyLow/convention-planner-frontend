@@ -5,7 +5,8 @@ import Box from '@material-ui/core/Box';
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-// import TabPanel from "@material-ui/core/TabP"
+
+import { makeStyles } from '@material-ui/core/styles';
 
 import {
   BrowserRouter as Router,
@@ -19,13 +20,24 @@ import {
 
 
 
+
 import Home from "./components/Home";
 import Talks from "./components/Talks";
 import Games from "./components/Games";
 import UserSchedule from "./components/UserSchedule"
 
-function App() {
+//Example of using theme in makeStyles
+const useStyles = makeStyles( theme => ({
+  test: props => ({
+    background: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
 
+  }),
+}));
+
+function App(props) {
+
+  const classes = useStyles();
   //Alt
   // const match = useRouteMatch();
   // const location = useLocation();
@@ -41,45 +53,18 @@ function App() {
 
   return (
     
-      <Router>
-      <Box>
-      {/* <AppBar position="static">
-        <Tabs value = {tabValue} onChange={handleTabChange}>
-          <Tab label="Item One" />
-          <Tab label="Item Two" />
-          <Tab label="Item Three"/>
-        </Tabs>
-     </AppBar> */}
-     
-    
-      {/* <ul>
-        <li>
-          <Link to="/">Core</Link>
-        </li>
-        <li>
-          <Link to="/talks">Talks</Link>
-        </li>
-        <li>
-          <Link to="/games">Games</Link>
-        </li>
-        <li>
-          <Link to="/your-schedule">Your Schedule</Link>
-        </li>
-      </ul> */}
+   <Router>
+    <Box>
       <Route path="/"
         render={(history) => (
-
-
-
-        
-      <AppBar position="static" color="default">
-        <Tabs value={history.location.pathname !== "/" ? history.location.pathname
-                    : false}>
-          <Tab label = "Core" value={""} component = {Link} to={"/"}/>
-          <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"}/>
-          <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/>
-        </Tabs>
-      </AppBar>
+        <AppBar position="static" color="primary">
+          <Tabs value={history.location.pathname !== "/" ? history.location.pathname
+                      : false} color="secondary">
+            <Tab label = "Core" value={"/"} component = {Link} to={"/"}/>
+            <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"} />
+            <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/>
+          </Tabs>
+        </AppBar>
       )}
       />
 

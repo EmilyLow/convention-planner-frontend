@@ -11,14 +11,14 @@ import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
 
 const theme = createMuiTheme({
-  // palette: {
-  //   primary: {
-  //     main: '##212121',
-  //   },
-  //   secondary: {
-  //     main: '##212121',
-  //   },
-  // },
+  palette: {
+    primary: {
+      main: '#212121',
+    },
+    secondary: {
+      main: '#c62828',
+    },
+  },
 });
 
 ReactDOM.render(
