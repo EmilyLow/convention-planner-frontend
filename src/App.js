@@ -7,6 +7,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import MUILink from "@material-ui/core/Link";
+import ToolBar from "@material-ui/core/Toolbar";
+import Divider from "@material-ui/core/Divider";
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -24,6 +27,7 @@ import {
 
 
 import Home from "./components/Home";
+import Core from "./components/Core";
 import Talks from "./components/Talks";
 import Games from "./components/Games";
 import UserSchedule from "./components/UserSchedule"
@@ -35,6 +39,27 @@ const useStyles = makeStyles( theme => ({
     color: theme.palette.primary.main,
 
   }),
+  headerSpread: props => ({
+    display: "flex",
+    justifyContent: "space-between",
+
+  }),
+  logInSpread: props => ({
+    display: "flex",
+    justifyContent: "center",
+    
+
+  }),
+  tabSpread: props => ({
+    display: "flex",
+    justifyContent: "flex-end",
+
+    //Check and this is present
+
+  }),
+  divider: props => ({
+    background: theme.palette.secondary.main,
+  })
 }));
 
 function App(props) {
@@ -49,18 +74,35 @@ function App(props) {
     setTabValue(newValue);
   }
 
+  const handleLogInOpen = () => {
+
+  }
+
+  const handleDialogueClose = () => {
+
+  }
+
   return (
     
    <Router>
     <Box>
       <Route path="/"
         render={(history) => (
-        <AppBar position="static" color="primary">
-          <Typography variant="h6">NecronomiCon</Typography>
-          {/* <Button color="secondary">Log In</Button> */}
-          <Tabs value={history.location.pathname !== "/" ? history.location.pathname
+        <AppBar position="static" color="primary" >
+          <ToolBar className={classes.headerSpread}>
+            <MUILink href="/" variant="h6" color="secondary">NecronomiCon</MUILink>
+            <Box className={classes.logInSpread}>
+              <Button color="secondary">Log In</Button>
+              {/* Why is this invisible. Why.  */}
+              <Divider className={classes.divider}  orientation="vertical" variant = "fullWidth" flexItem />
+              <Button color="secondary">Sign Up</Button>
+            </Box>
+            
+          </ToolBar>
+    
+          <Tabs  centered value={history.location.pathname !== "/" ? history.location.pathname
                       : false} color="secondary">
-            <Tab label = "Core" value={"/"} component = {Link} to={"/"}/>
+            <Tab label = "Core" value={"/core"} component = {Link} to={"/core"}/>
             <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"} />
             <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/>
             <Tab label = "Your Schedule" value={"/your-schedule"} component = {Link} to={"/your-schedule"}/>
@@ -70,6 +112,9 @@ function App(props) {
       />
 
       <Switch>
+        <Route path = "/core">
+          <Core/>
+        </Route>
         <Route path="/talks">
           <Talks />
         </Route>
