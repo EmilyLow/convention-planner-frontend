@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import ReactDOM from "react-dom";
 import '@fontsource/roboto';
 import Box from '@material-ui/core/Box';
@@ -30,7 +30,8 @@ import Home from "./components/Home";
 import Core from "./components/Core";
 import Talks from "./components/Talks";
 import Games from "./components/Games";
-import UserSchedule from "./components/UserSchedule"
+import UserSchedule from "./components/UserSchedule";
+import LogIn from "./components/LogIn";
 
 //Example of using theme in makeStyles
 const useStyles = makeStyles( theme => ({
@@ -66,7 +67,7 @@ function App(props) {
 
   const classes = useStyles();
 
-
+  let [logInOpen, setLogInOpen] = useState(false);
 
   let [tabValue, setTabValue] = new React.useState(0);
 
@@ -75,11 +76,11 @@ function App(props) {
   }
 
   const handleLogInOpen = () => {
-
+    setLogInOpen(true);
   }
 
   const handleDialogueClose = () => {
-
+    setLogInOpen(false);
   }
 
   return (
@@ -92,7 +93,8 @@ function App(props) {
           <ToolBar className={classes.headerSpread}>
             <MUILink href="/" variant="h6" color="secondary">NecronomiCon</MUILink>
             <Box className={classes.logInSpread}>
-              <Button color="secondary">Log In</Button>
+              <Button color="secondary" onClick={handleLogInOpen}>Log In</Button>
+              <LogIn open = {logInOpen} handleClose = {handleDialogueClose}/>
               {/* Why is this invisible. Why.  */}
               <Divider className={classes.divider}  orientation="vertical" variant = "fullWidth" flexItem />
               <Button color="secondary">Sign Up</Button>
