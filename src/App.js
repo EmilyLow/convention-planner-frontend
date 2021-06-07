@@ -35,11 +35,6 @@ import LogIn from "./components/LogIn";
 
 //Example of using theme in makeStyles
 const useStyles = makeStyles( theme => ({
-  test: props => ({
-    background: theme.palette.secondary.main,
-    color: theme.palette.primary.main,
-
-  }),
   headerSpread: props => ({
     display: "flex",
     justifyContent: "space-between",
