@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -38,6 +40,9 @@ export default function LogIn(props) {
 
     const classes = useStyles();
     const {handleSubmit, control, watch } = useForm();
+
+    //Change location of this or use Context
+    const {currentUser, setCurrentUser} = useState({});
 
     const onSubmit = data => {
         console.log("Click");
