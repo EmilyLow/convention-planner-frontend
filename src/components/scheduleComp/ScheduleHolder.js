@@ -14,7 +14,7 @@ function ScheduleHolder() {
     dayNum: 3,
     hourNum: 13,
     startHour: 9,
-    startDate: new Date(2021, 6, 7)
+    startDate: new Date(2019, 7, 22)
   };
  
   const [eventsList, setEventsList] = useState([]);
