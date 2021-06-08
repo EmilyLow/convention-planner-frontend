@@ -12,7 +12,7 @@ function ScheduleHolder() {
 
   const settings = {
     dayNum: 3,
-    hourNum: 13,
+    hourNum: 15,
     startHour: 9,
     startDate: new Date(2019, 7, 22)
   };
@@ -41,7 +41,15 @@ const getEvents = () => {
   axios.get(url + "/events")
   .then((response => {
 
-    setEventsList(convertToDate(response.data));
+    // setEventsList(convertToDate(response.data));
+
+    //Adding for event-scheduler
+    //Reorganize events before adding back in
+
+    let dataConverted = convertToDate(response.data);
+    let dataOrganized = reorganizeAll(dataConverted);
+    // console.log(dataOrganized);
+    setEventsList(dataOrganized);
       
   }))
   .catch(error => console.error(`Error: ${error}`))
@@ -495,6 +503,7 @@ const convertToDate = (rawEvents) => {
 
   rawEvents.forEach(event => {
    
+
 
       if(event.start_time.getMonth() === month && event.start_time.getDate() === date) {
       
