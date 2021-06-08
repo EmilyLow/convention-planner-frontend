@@ -8,73 +8,33 @@ import Schedule from "./Schedule";
 
 function ScheduleHolder() {
   
-  const [settings, setSettings] = useState({ 
+ 
+
+  const settings = {
     dayNum: 3,
     hourNum: 13,
     startHour: 9,
     startDate: new Date(2021, 6, 7)
-  });
+  };
  
   const [eventsList, setEventsList] = useState([]);
 
 
-  const url = 'http://localhost:3001';
+  const url = 'http://localhost:3002';
 
   useEffect(() => {
     getEvents();
-    getSettings();
+   
 
   }, []);
 
  
-  useEffect(() => {
-    triggerSettingsReorder();
-  }, [settings]);
 
 
- const getSettings = () => {
-   axios.get(url + "/settings")
-   .then((response => {
-    
-     
-     let newSettings = {
-      id: response.data[0].id,
-      dayNum: response.data[0].day_number,
-      hourNum: response.data[0].hour_number,
-      startHour: response.data[0].start_hour,
-      startDate: new Date(response.data[0].start_date)
-     }
-    
-     setSettings(newSettings);
-   
-   }))
-   .catch(error => console.error(`Error: ${error}`))
- }
-
- const updateSettings =  (newSettings) => {
 
  
-  let id = newSettings.id;
 
-  let renamed = {
-    id: id,
-    day_number: newSettings.dayNum,
-    hour_number: newSettings.hourNum,
-    start_hour: newSettings.startHour,
 
-    start_date: newSettings.startDate
-  }
-
-  axios.put(url + "/settings/" + id, renamed)
-  .then(  (response) => {
-
-    //Maybe not best practice (since I'm using existing var and not return).
-     setSettings(newSettings);
-
-  })
-  .catch(error => console.error(`Error: ${error}`))
-
- };
 
 const getEvents = () => {
   
