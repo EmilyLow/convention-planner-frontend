@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Controller, useForm,} from "react-hook-form";
+import axios from "axios";
 
 import axiosWithAuth from "./utils/axiosWithAuth";
 
@@ -45,40 +46,45 @@ export default function SignUpForm(props) {
     let watchPassword = watch("password", "");
 
     const onSubmit = data => {
-        console.log("Click");
+     
 
         signUpUser(data);
 
     };  
 
+    //TODO: Alert user if username is taken
+    //TODO: Fix formatting on logged in name
     const signUpUser = (values) => {
 
-        console.log(values);
 
-        //TODO: Alter values
-        // axios.post("http://localhost:3002/users/auth/login", values) 
-        // .then((res) => {
-        //     axiosWithAuth()
-        //     .post("http://localhost:3002/users/auth/login", values)
-        //     .then((res) => {
+        let userData = {username: values.username, password: values.password};
 
-        //         localStorage.setItem("token", res.data.token);
-        //         localStorage.setItem("loggedInUser", res.data.username);
+        
+        
+        axios.post("http://localhost:3002/users/auth/register", userData) 
+        .then((res) => {
+          
+            axiosWithAuth()
+            .post("http://localhost:3002/users/auth/login", userData)
+            .then((res) => {
+
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("loggedInUser", res.data.username);
             
-        //         props.setCurrentUser(res.data.username);
-        //         props.handleClose();
-        //         //TODO: currently a failed login errors out without informing the user outside of the console
-        //         //TODO: Set Log In/ Sign up to change if logged in
-        //     })
-        //     .catch((err) => {
-        //         console.log("Error while logging in", err);
-        //     })
+                props.setCurrentUser(res.data.username);
+                props.handleClose();
+               
+                
+            })
+            .catch((err) => {
+                console.log("Error while logging in", err);
+            })
 
 
-        // })
-        // .catch((err) => {
-        //     console.log("Error while signing up", err);
-        // })
+        })
+        .catch((err) => {
+            console.log("Error while signing up", err);
+        })
         
 
        
