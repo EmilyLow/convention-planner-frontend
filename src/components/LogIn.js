@@ -58,6 +58,12 @@ export default function LogIn(props) {
 
     
 
+        const handleLogOut = () => {
+            props.setCurrentUser("Guest");
+            localStorage.setItem("token", "");
+            localStorage.setItem("loggedInUser", "Guest");
+        }
+
         const handleLogInOpen = () => {
             setLogInOpen(true);
           }
@@ -98,7 +104,7 @@ export default function LogIn(props) {
             </Box>
         </Dialog> */}
         <Divider className={classes.divider}  orientation="vertical" variant = "fullWidth" flexItem />
-              <Button color="secondary">Log Out</Button>
+              <Button color="secondary" onClick={handleLogOut}>Log Out</Button>
         </Box>
         )
     }
