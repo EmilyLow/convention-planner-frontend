@@ -11,7 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-import LoginForm from "./LoginForm"
+import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm";
 
 const useStyles = makeStyles( theme => ({
     //Todo, logout
@@ -46,16 +47,21 @@ const useStyles = makeStyles( theme => ({
       }),
       divider: props => ({
         background: theme.palette.secondary.main,
+      }),
+      dialogHeaderStyle: props => ({
+          background: theme.palette.primary.main,
+          color: theme.palette.secondary.main
+
       })
   }));
 
-export default function LogIn(props) {
+export default function AuthBox(props) {
 
 
     const classes = useStyles();
    
     let [logInOpen, setLogInOpen] = useState(false);
-
+    let [signUpOpen, setSignUpOpen] = useState(false);
     
 
         const handleLogOut = () => {
@@ -66,10 +72,17 @@ export default function LogIn(props) {
 
         const handleLogInOpen = () => {
             setLogInOpen(true);
-          }
+            setSignUpOpen(false);
+        }
+
+        const handleSignUpOpen = () => {
+            setSignUpOpen(true);
+            setLogInOpen(false);
+        }
         
           const handleDialogueClose = () => {
             setLogInOpen(false);
+            setSignUpOpen(false);
           }
 
     //TODO: Make it so that this stays through refresh. Store currentUser in local storage or retrieve it from there initially?
@@ -79,15 +92,25 @@ export default function LogIn(props) {
             <Button color="secondary" onClick={handleLogInOpen}>Log In</Button>  
             <Dialog  open={logInOpen} onClose = {handleDialogueClose}>
                 <Box className = {classes.dialogStyle}>
-                    <DialogTitle>Log In</DialogTitle>
+                    <DialogTitle className = {classes.dialogHeaderStyle}>Log In</DialogTitle>
                     <DialogContent>
                         <LoginForm setCurrentUser = {props.setCurrentUser} handleClose={handleDialogueClose}/>
+                        {/* Todo: Make this functional */}
                         <Link href="#" variant="p" color="secondary">Sign Up</Link>
                     </DialogContent>
-            </Box>
-        </Dialog>
+                </Box>
+            </Dialog>
+            <Dialog  open={signUpOpen} onClose = {handleDialogueClose}>
+                <Box className = {classes.dialogStyle}>
+                    <DialogTitle className = {classes.dialogHeaderStyle}>Sign Up</DialogTitle>
+                    <DialogContent>
+                        <SignUpForm setCurrentUser = {props.setCurrentUser} handleClose={handleDialogueClose}/>
+                        
+                    </DialogContent>
+                </Box>
+            </Dialog>
         <Divider className={classes.divider}  orientation="vertical" variant = "fullWidth" flexItem />
-              <Button color="secondary">Sign Up</Button>
+              <Button color="secondary" onClick={handleSignUpOpen}>Sign Up</Button>
         </Box>
         )
     }  else {

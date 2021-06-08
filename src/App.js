@@ -24,7 +24,7 @@ import Core from "./components/Core";
 import Talks from "./components/Talks";
 import Games from "./components/Games";
 import UserSchedule from "./components/UserSchedule";
-import LogIn from "./components/LogIn";
+import AuthBox from "./components/AuthBox";
 
 //Example of using theme in makeStyles
 const useStyles = makeStyles( theme => ({
@@ -95,7 +95,7 @@ function App(props) {
               <Button color="secondary">Sign Up</Button>
             </Box> */}
 
-            <LogIn setCurrentUser = {setCurrentUser} currentUser = {currentUser}/>
+            <AuthBox setCurrentUser = {setCurrentUser} currentUser = {currentUser}/>
             
           </ToolBar>
     
