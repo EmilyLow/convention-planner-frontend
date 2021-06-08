@@ -1,13 +1,6 @@
-import {useState} from "react";
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {Controller, useForm,} from "react-hook-form";
@@ -47,7 +40,7 @@ const useStyles = makeStyles( theme => ({
 export default function LoginForm(props) {
 
     const classes = useStyles();
-    const {handleSubmit, control, watch } = useForm();
+    const {handleSubmit, control } = useForm();
 
     //Change location of this or use Context
     // const [currentUser, setCurrentUser] = useState("Guest");
@@ -68,6 +61,7 @@ export default function LoginForm(props) {
         .then((res) => {
 
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("loggedInUser", res.data.username);
            
             props.setCurrentUser(res.data.username);
             props.handleClose();

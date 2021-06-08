@@ -1,15 +1,11 @@
-import React, { Fragment, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useEffect } from "react";
 import '@fontsource/roboto';
 import Box from '@material-ui/core/Box';
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import MUILink from "@material-ui/core/Link";
 import ToolBar from "@material-ui/core/Toolbar";
-import Divider from "@material-ui/core/Divider";
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -18,9 +14,6 @@ import {
   Switch,
   Route,
   Link,
-  useLocation,
-  useRouteMatch,
-  useParams
 } from "react-router-dom";
 
 
@@ -65,21 +58,22 @@ function App(props) {
   // let [logInOpen, setLogInOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState("Guest");
 
+  //Setting currentUser from localStorage on load
+  //Possibly this should be done in useState intializing 
+  useEffect(() => {
+    let storedValue = localStorage.getItem("loggedInUser");
+
+    if(storedValue != null) {
+      setCurrentUser(storedValue);
+    }
+
+  }, []);
+
   let [tabValue, setTabValue] = new React.useState(0);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   }
-
-  // const handleLogInOpen = () => {
-  //   setLogInOpen(true);
-  // }
-
-  // const handleDialogueClose = () => {
-  //   setLogInOpen(false);
-  // }
-
-  //Determines login element?
 
   
 
