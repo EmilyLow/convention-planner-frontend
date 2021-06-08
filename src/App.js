@@ -62,7 +62,8 @@ function App(props) {
 
   const classes = useStyles();
 
-  let [logInOpen, setLogInOpen] = useState(false);
+  // let [logInOpen, setLogInOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState("Guest");
 
   let [tabValue, setTabValue] = new React.useState(0);
 
@@ -70,13 +71,18 @@ function App(props) {
     setTabValue(newValue);
   }
 
-  const handleLogInOpen = () => {
-    setLogInOpen(true);
-  }
+  // const handleLogInOpen = () => {
+  //   setLogInOpen(true);
+  // }
 
-  const handleDialogueClose = () => {
-    setLogInOpen(false);
-  }
+  // const handleDialogueClose = () => {
+  //   setLogInOpen(false);
+  // }
+
+  //Determines login element?
+
+  
+
 
   return (
     
@@ -87,13 +93,15 @@ function App(props) {
         <AppBar position="static" color="primary" >
           <ToolBar className={classes.headerSpread}>
             <MUILink href="/" variant="h6" color="secondary">NecronomiCon</MUILink>
-            <Box className={classes.logInSpread}>
+            {/* <Box className={classes.logInSpread}>
               <Button color="secondary" onClick={handleLogInOpen}>Log In</Button>
               <LogIn open = {logInOpen} handleClose = {handleDialogueClose}/>
-              {/* Why is this invisible. Why.  */}
+              
               <Divider className={classes.divider}  orientation="vertical" variant = "fullWidth" flexItem />
               <Button color="secondary">Sign Up</Button>
-            </Box>
+            </Box> */}
+
+            <LogIn setCurrentUser = {setCurrentUser} currentUser = {currentUser}/>
             
           </ToolBar>
     
