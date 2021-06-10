@@ -6,7 +6,7 @@ import Schedule from "./Schedule";
 
 
 
-function ScheduleHolder() {
+function ScheduleHolder({scheduleId}) {
   
  
 
@@ -38,9 +38,11 @@ function ScheduleHolder() {
 
 const getEvents = () => {
   
-  axios.get(url + "/events")
+  axios.get(url + "/schedules" + "/" + scheduleId + "/events")
   .then((response => {
 
+    console.log("Response for", scheduleId, "is ", response);
+    console.log(url + "/schedules" + "/" + {scheduleId} + "/events");
     // setEventsList(convertToDate(response.data));
 
     //Adding for event-scheduler
@@ -59,7 +61,7 @@ const getEvents = () => {
 
    let results;
 
-   await axios.get(url + "/events")
+   await axios.get(url + "/schedules" + "/" + scheduleId + "/events")
    .then((response) => {
 
     results = response.data;
