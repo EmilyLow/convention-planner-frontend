@@ -1,23 +1,15 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
+
+import ScheduleHolder from "./scheduleComp/ScheduleHolder";
 
 
-const useStyles = makeStyles( theme => ({
-    main: props => ({
-    //   background: "#f2eecb",
-    //   color: theme.palette.primary.main,
-  
-    }),
-  }));
 
+export default function Home() {
 
-export default function Games() {
-    const classes = useStyles();
+    let scheduleId = 3; 
 
     return(
-     <Box class={classes.main}>
-            <p>Games</p>
-            
-       </Box>
+        <div><p>Core</p>
+        <ScheduleHolder scheduleId = {3}/>
+        </div>
     ) 
 }

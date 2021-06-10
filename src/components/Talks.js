@@ -1,7 +1,15 @@
 
-export default function Talks() {
+import ScheduleHolder from "./scheduleComp/ScheduleHolder";
+
+
+
+export default function Home() {
+
+    let scheduleId = 2; 
 
     return(
-        <div><p>Talks</p></div>
+        <div><p>Core</p>
+        <ScheduleHolder scheduleId = {scheduleId}/>
+        </div>
     ) 
 }
