@@ -63,6 +63,14 @@ function ContentPane({details, deleteEvent, handleClose}) {
         
     }
 
+    function userAddAction() {
+
+    }
+
+    function userRemoveAction() {
+
+    }
+
     return(<EventDiv>
         <Grid container>
              <Grid item xs={12}> <Typography variant={'h5'}>{details.event_name}</Typography> </Grid>
@@ -80,7 +88,8 @@ function ContentPane({details, deleteEvent, handleClose}) {
 
             { details.summary !== "" && <Grid item xs = {2}><Subject/> </Grid>}
             { details.summary !== "" && <Grid item xs = {10}><Typography variant = {'body1'}>{details.summary}</Typography></Grid>}
-           <Grid><Button item xs = {4} variant="outlined" onClick={() => { deleteAction() }}>Delete</Button></Grid> 
+            {/* ToDo: Switch to remove button if event is added to a user schedule  */}
+           <Grid><Button item xs = {4} variant="outlined" onClick={() => { }}>Add</Button></Grid> 
         </Grid>
             
     </EventDiv>)
