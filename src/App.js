@@ -7,6 +7,10 @@ import Tab from "@material-ui/core/Tab";
 import MUILink from "@material-ui/core/Link";
 import ToolBar from "@material-ui/core/Toolbar";
 
+import UserContext from "./components/utils/UserContext";
+
+import axios from "axios";
+
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -26,7 +30,7 @@ import Games from "./components/Games";
 import UserSchedule from "./components/UserSchedule";
 import AuthBox from "./components/AuthBox";
 
-//Example of using theme in makeStyles
+
 const useStyles = makeStyles( theme => ({
   headerSpread: props => ({
     display: "flex",
@@ -53,21 +57,42 @@ const useStyles = makeStyles( theme => ({
 
 function App(props) {
 
+  //TODO Check local storage and useContext
+
   const classes = useStyles();
 
-  // let [logInOpen, setLogInOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState("Guest");
+
+  const [currentUser, setCurrentUser] = useState({userId: 0, username: 'Guest'});
 
   //Setting currentUser from localStorage on load
   //Possibly this should be done in useState intializing 
+  //TODO, update for context
   useEffect(() => {
-    let storedValue = localStorage.getItem("loggedInUser");
+    let storedValue = localStorage.getItem("loggedInUserId");
+    console.log("Stored value", storedValue);
+
 
     if(storedValue != null) {
-      setCurrentUser(storedValue);
+      confirmCurrentUser(storedValue);
     }
 
   }, []);
+
+  //TODO, auth??? Key should still be stored though
+  //Should do normal axios or axiosWithAuth though?
+  //NOTE! Doing it this way causes a flicker when you refresh. It may be better to store all of this locally to prevent flicker
+  function confirmCurrentUser(userId) {
+    axios.get("http://localhost:3002/users/" + userId)
+    .then((res) => {
+      console.log("COnfirm current user", res);
+      setCurrentUser({id: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id})
+    })
+    .catch((err) => {
+      console.log("Error confirming current user", err);
+    })
+  }
+
+  
 
   let [tabValue, setTabValue] = new React.useState(0);
 
@@ -79,7 +104,7 @@ function App(props) {
 
 
   return (
-    
+    <UserContext.Provider value={currentUser}>
    <Router>
     <Box>
       <Route path="/"
@@ -87,15 +112,9 @@ function App(props) {
         <AppBar position="static" color="primary" >
           <ToolBar className={classes.headerSpread}>
             <MUILink href="/" variant="h6" color="secondary">NecronomiCon</MUILink>
-            {/* <Box className={classes.logInSpread}>
-              <Button color="secondary" onClick={handleLogInOpen}>Log In</Button>
-              <LogIn open = {logInOpen} handleClose = {handleDialogueClose}/>
-              
-              <Divider className={classes.divider}  orientation="vertical" variant = "fullWidth" flexItem />
-              <Button color="secondary">Sign Up</Button>
-            </Box> */}
 
-            <AuthBox setCurrentUser = {setCurrentUser} currentUser = {currentUser}/>
+            {/* Removed currentUser = here */}
+            <AuthBox setCurrentUser = {setCurrentUser}/>
             
           </ToolBar>
     
@@ -129,7 +148,9 @@ function App(props) {
       </Switch>
     </Box>
   </Router>
+  </UserContext.Provider>
   );
+  
 }
 
 export default App;

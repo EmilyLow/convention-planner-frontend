@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -10,22 +10,14 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
+import UserContext from "./utils/UserContext";
 
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 
 const useStyles = makeStyles( theme => ({
-    //Todo, logout
-    //Logout might be a frontend only thing
 
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        // justifyContent: 'center',
-        // width: `100%`,
-     
-        padding: theme.spacing(2)
-      },
+
     dialogStyle: props => ({
     //   background: theme.palette.primary.main,
     //   color: theme.palette.primary.contrastText,
@@ -57,6 +49,10 @@ const useStyles = makeStyles( theme => ({
 
 export default function AuthBox(props) {
 
+    //TODO : Fix
+    const userData = useContext(UserContext);
+    console.log("User Data", userData);
+
 
     const classes = useStyles();
    
@@ -65,9 +61,10 @@ export default function AuthBox(props) {
     
 
         const handleLogOut = () => {
-            props.setCurrentUser("Guest");
+            props.setCurrentUser({userId: 0, username: 'Guest'});
             localStorage.setItem("token", "");
-            localStorage.setItem("loggedInUser", "Guest");
+            // localStorage.setItem("loggedInUser", "Guest");
+            localStorage.setItem("loggedInUserId", 0);
         }
 
         const handleLogInOpen = () => {
@@ -85,8 +82,8 @@ export default function AuthBox(props) {
             setSignUpOpen(false);
           }
 
-    //TODO: Make it so that this stays through refresh. Store currentUser in local storage or retrieve it from there initially?
-    if(props.currentUser === "Guest") {
+          //TODO switch to context
+    if(userData.userId === 0) {
         return(
             <Box className={classes.logInSpread}>
             <Button color="secondary" onClick={handleLogInOpen}>Log In</Button>  
@@ -116,7 +113,7 @@ export default function AuthBox(props) {
     }  else {
         return (
             <Box className={classes.logInSpread}>
-             <Typography variant="h6" color="secondary"> {props.currentUser}   </Typography>
+             <Typography variant="h6" color="secondary"> {userData.username}   </Typography>
             {/* <Dialog  open={logInOpen} onClose = {handleDialogueClose}>
                 <Box className = {classes.dialogStyle}>
                     <DialogTitle>Log In</DialogTitle>

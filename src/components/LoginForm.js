@@ -55,15 +55,18 @@ export default function LoginForm(props) {
     };  
 
     const logInUser = (values) => {
+        //TODO Figure out why id is not being passed
 
         axiosWithAuth()
         .post("http://localhost:3002/users/auth/login", values)
         .then((res) => {
+            console.log("Log in res", res);
 
             localStorage.setItem("token", res.data.token);
-            localStorage.setItem("loggedInUser", res.data.username);
+            // localStorage.setItem("loggedInUser", res.data.username);
+            localStorage.setItem("loggedInUserId", res.data.id);
            
-            props.setCurrentUser(res.data.username);
+            props.setCurrentUser({userId: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id});
             props.handleClose();
             //TODO: currently a failed login errors out without informing the user outside of the console
             //TODO: Set Log In/ Sign up to change if logged in
