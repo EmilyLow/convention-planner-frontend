@@ -36,6 +36,7 @@ import Home from "./components/Home";
 import Core from "./components/Core";
 import Talks from "./components/Talks";
 import Games from "./components/Games";
+import Shows from "./components/Shows";
 import UserSchedule from "./components/UserSchedule";
 import AuthBox from "./components/AuthBox";
 
@@ -132,6 +133,7 @@ function App(props) {
             <Tab label = "Core" value={"/core"} component = {Link} to={"/core"}/>
             <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"} />
             <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/>
+            <Tab label = "Shows" value={"/shows"} component = {Link} to={"/shows"}/>
             <Tab label = "Your Schedule" value={"/your-schedule"} component = {Link} to={"/your-schedule"}/>
           </Tabs>
         </AppBar>
@@ -147,6 +149,9 @@ function App(props) {
         </Route>
         <Route path="/games">
           <Games />
+        </Route>
+        <Route path="/shows">
+          <Shows />
         </Route>
         <Route path = "/your-schedule">
           <UserSchedule/>
