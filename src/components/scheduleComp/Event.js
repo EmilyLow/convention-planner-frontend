@@ -7,6 +7,9 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
     typography: {
       padding: theme.spacing(2)
+    },
+    color: {
+      color: "#FFFAFA",
     }
   }));
   
@@ -26,7 +29,7 @@ function Event({details, settings, deleteEvent, handleClick}) {
       
         <EventStyle onClick={ e => handleClick(e, details)} details={details} startTimeValue = {startTimeValue} endTimeValue = {endTimeValue} length = {length} startHour = {settings.startHour}>
 
-            <Label>{details.event_name}</Label>
+            <Label className={classes.color}>{details.event_name}</Label>
         </EventStyle>
     );
 }
