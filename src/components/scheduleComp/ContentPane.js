@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 
 
 
-function ContentPane({details, deleteEvent, handleClose}) {
+function ContentPane({details, deleteEvent, handleClose, personalSchedule}) {
 
     
 
@@ -71,6 +71,14 @@ function ContentPane({details, deleteEvent, handleClose}) {
 
     }
 
+    function getButton(userCal) {
+        if(userCal) {
+            return <Button item xs = {4} variant="outlined" onClick={() => { }}>Remove</Button>;
+        } else {
+            return <Button item xs = {4} variant="outlined" onClick={() => { }}>Add</Button>;
+        }
+    }
+
     return(<EventDiv>
         <Grid container>
              <Grid item xs={12}> <Typography variant={'h5'}>{details.event_name}</Typography> </Grid>
@@ -89,7 +97,11 @@ function ContentPane({details, deleteEvent, handleClose}) {
             { details.summary !== "" && <Grid item xs = {2}><Subject/> </Grid>}
             { details.summary !== "" && <Grid item xs = {10}><Typography variant = {'body1'}>{details.summary}</Typography></Grid>}
             {/* ToDo: Switch to remove button if event is added to a user schedule  */}
-           <Grid><Button item xs = {4} variant="outlined" onClick={() => { }}>Add</Button></Grid> 
+           <Grid>
+               
+               {getButton(personalSchedule)}
+           
+           </Grid> 
         </Grid>
             
     </EventDiv>)

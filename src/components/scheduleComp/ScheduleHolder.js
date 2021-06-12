@@ -8,7 +8,9 @@ import Schedule from "./Schedule";
 
 function ScheduleHolder({scheduleId}) {
   
- 
+ // TODO: Get current schedule object? 
+ //Base state of buttons (add/remove) off of schedule objects? 
+ //TODO, make it so it only reorganizes user calendar when first getting events?
 
   const settings = {
     dayNum: 3,
@@ -18,19 +20,30 @@ function ScheduleHolder({scheduleId}) {
   };
  
   const [eventsList, setEventsList] = useState([]);
-
+  const [calendar, setCalendar] = useState({});
+  //personal_schedule
 
   const url = 'http://localhost:3002';
 
   useEffect(() => {
     getEvents();
-   
+    getCalendar();
 
   }, []);
 
  
 
-
+  const getCalendar = () => {
+    console.log("sched id", scheduleId);
+    axios.get(url + "/schedules" + "/" + scheduleId)
+    .then((response) => {
+      // console.log("Get calendar response,", response);
+      setCalendar(response.data);
+    })
+    .catch((err) => {
+      console.log("Error retrieving calendar", err);
+    })
+  }
 
  
 
@@ -39,10 +52,10 @@ function ScheduleHolder({scheduleId}) {
 const getEvents = () => {
   
   axios.get(url + "/schedules" + "/" + scheduleId + "/events")
-  .then((response => {
+  .then((response) => {
 
-    console.log("Response for", scheduleId, "is ", response);
-    console.log(url + "/schedules" + "/" + {scheduleId} + "/events");
+    // console.log("Response for", scheduleId, "is ", response);
+    // console.log(url + "/schedules" + "/" + {scheduleId} + "/events");
     // setEventsList(convertToDate(response.data));
 
     //Adding for event-scheduler
@@ -53,7 +66,7 @@ const getEvents = () => {
     // console.log(dataOrganized);
     setEventsList(dataOrganized);
       
-  }))
+  })
   .catch(error => console.error(`Error: ${error}`))
 }
 
@@ -529,7 +542,7 @@ const convertToDate = (rawEvents) => {
     <LayoutDiv>
       <ScheduleDiv>
         <StyledH1>Event Scheduler</StyledH1>
-        <Schedule settings = {settings} eventsList = {eventsList} deleteEvent={deleteEvent}/>
+        <Schedule settings = {settings} eventsList = {eventsList} deleteEvent={deleteEvent} personalSchedule={calendar.personalSchedule}/>
       </ScheduleDiv>
     </LayoutDiv>
   );

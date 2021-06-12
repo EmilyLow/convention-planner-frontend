@@ -8,7 +8,7 @@ import Event from "./Event";
 
 function Schedule(props) {
 
-    let {settings, eventsList, deleteEvent} = props;
+    let {settings, eventsList, deleteEvent, personalSchedule} = props;
 
 const [anchorEl, setAnchorEl] = React.useState(null);
  const [popContents, setPopContents] = React.useState({});
@@ -116,7 +116,7 @@ const id = open ? "simple-popover" : undefined;
           }}
         >
            
-            <ContentPane details = {popContents}  deleteEvent={deleteEvent} handleClose={handleClose}/>
+            <ContentPane details = {popContents}  deleteEvent={deleteEvent} handleClose={handleClose} personalSchedule={personalSchedule}/>
             
          
         </Popover>

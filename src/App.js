@@ -62,7 +62,7 @@ function App(props) {
   const classes = useStyles();
 
 
-  const [currentUser, setCurrentUser] = useState({userId: 0, username: 'Guest'});
+  const [currentUser, setCurrentUser] = useState({userId: 0, scheduleId: 0, username: 'Guest'});
 
   //Setting currentUser from localStorage on load
   //Possibly this should be done in useState intializing 

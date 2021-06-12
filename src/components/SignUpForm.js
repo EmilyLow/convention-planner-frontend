@@ -69,9 +69,10 @@ export default function SignUpForm(props) {
             .then((res) => {
 
                 localStorage.setItem("token", res.data.token);
-                localStorage.setItem("loggedInUser", res.data.username);
+                // localStorage.setItem("loggedInUser", res.data.username);
+                localStorage.setItem("loggedInUserId", res.data.id);
             
-                props.setCurrentUser(res.data.username);
+                props.setCurrentUser({id: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id});
                 props.handleClose();
                
                 
