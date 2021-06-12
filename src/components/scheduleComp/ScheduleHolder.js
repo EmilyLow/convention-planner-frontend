@@ -1,16 +1,22 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import axios from 'axios';
 import styled from "styled-components";
 
 import Schedule from "./Schedule";
+import UserContext from "../utils/UserContext";
 
-
+//TODO: Figure out why refreshing temporarily breaks user schedule
+//Okay its doing that because scheduleId is starting as undefined for "Your Schedule"
+//And that's happening because for userschedule, schedule_id comes from context, while its hard defined in the others
 
 function ScheduleHolder({scheduleId}) {
   
  // TODO: Get current schedule object? 
  //Base state of buttons (add/remove) off of schedule objects? 
  //TODO, make it so it only reorganizes user calendar when first getting events?
+
+ const userData = useContext(UserContext);
+//  console.log("Schedule id", scheduleId);
 
   const settings = {
     dayNum: 3,
@@ -25,20 +31,43 @@ function ScheduleHolder({scheduleId}) {
 
   const url = 'http://localhost:3002';
 
-  useEffect(() => {
-    getEvents();
+  //Changing this to scheduleId instead of once seems to have fixed problem with events not showing on refresh
+  useEffect( () => {
+    // console.log("Use Effect", scheduleId);
     getCalendar();
+    // let persSchedule = scheduleData.personal_schedule;
+    // getCalender calls getEvents after completion
 
-  }, []);
+    
+
+    //Alt
+    //If personal schedule
+    //triggerLoadReorder
+    //else just getEvents()
+    // if (persSchedule) {
+    //   triggerLoadReorder();
+    // } else {
+    //   getEvents();
+    // }
+  }, [scheduleId]);
 
  
 
   const getCalendar = () => {
-    console.log("sched id", scheduleId);
+    // console.log("sched id", scheduleId);
     axios.get(url + "/schedules" + "/" + scheduleId)
     .then((response) => {
-      // console.log("Get calendar response,", response);
+      // console.log("Get Calender then");
       setCalendar(response.data);
+      console.log("logged", response.data);
+    
+      
+
+      if (response.data.personal_schedule) {
+        triggerLoadReorder();
+      } else {
+        getEvents();
+      }
     })
     .catch((err) => {
       console.log("Error retrieving calendar", err);
@@ -49,22 +78,25 @@ function ScheduleHolder({scheduleId}) {
 
 
 
-const getEvents = () => {
+const getEvents = (personalSchedule) => {
   
   axios.get(url + "/schedules" + "/" + scheduleId + "/events")
   .then((response) => {
 
-    // console.log("Response for", scheduleId, "is ", response);
-    // console.log(url + "/schedules" + "/" + {scheduleId} + "/events");
-    // setEventsList(convertToDate(response.data));
+    setEventsList(convertToDate(response.data));
 
-    //Adding for event-scheduler
-    //Reorganize events before adding back in
-
-    let dataConverted = convertToDate(response.data);
-    let dataOrganized = reorganizeAll(dataConverted);
-    // console.log(dataOrganized);
-    setEventsList(dataOrganized);
+    //Previous version
+    // let dataConverted = convertToDate(response.data);
+    
+    // //TODO: Figure why it shunts itself into "get events else" after refresh
+    // if (personalSchedule) {
+    //   // console.log("Get events if");
+    //   let dataOrganized = reorganizeAll(dataConverted);
+    //   setEventsList(dataOrganized);
+    // } else {
+    //   // console.log("Get events else");
+    //   setEventsList(dataConverted);
+    // }
       
   })
   .catch(error => console.error(`Error: ${error}`))
@@ -106,6 +138,10 @@ const getEvents = () => {
    .catch(error => console.error(`Error: ${error}`))
  }
 
+ //TODO: Figure why this breaks things before a refresh. 
+ //TODO: Need to find a way to tell UserSchedule to reorder after deletion
+ //But the delete button should actually belong to userSchedule so it should work? 
+ //So triggerDeleteReorder is probably broken
  const deleteEvent = (event) => {
 
    let id = event.id;
@@ -121,99 +157,34 @@ const getEvents = () => {
  const  addEvent = (event) => {
  
 
-  let formEvent = {
-    event_name: event.title,
+  let personalScheduleId = userData.schedule_id;
 
-    speaker: event.speaker,
-    summary: event.description,
-    location: event.location,
-    start_time: event.start_time,
-    end_time: event.end_time,
-    color: getRandomColor()
-  };
 
-  axios.post(url + "/events", formEvent)
-  .then((response => {
-    
-    triggerReorder(response.data);
-  }))
-  .catch(error => console.error(`Error: ${error}`))
+
+  if(personalScheduleId === 0) {
+    console.log("Error: Can't add event to guest schedule.");
+  } else {
+    let formEvent = {
+      event_name: event.event_name,
+      schedule_id: personalScheduleId,
+      speaker: event.speaker,
+      summary: event.description,
+      location: event.location,
+      start_time: event.start_time,
+      end_time: event.end_time,
+      start_col: 0,
+      span: 0,
+      color: event.color
+    };
+
+    console.log(formEvent);
+    axios.post(url + "/events", formEvent)
+    .then((res) => console.log(res))
+    .catch(error => console.error(`Error: ${error}`))
+  }
 }
 
 
-  
-   function  triggerReorder(newEvent) {
-   
-
-    let formNewEvent = convertToDate([newEvent])[0];
-    let appEvents = [...eventsList, formNewEvent];
- 
-    let onDay = getEventsOnDay(appEvents, formNewEvent.start_time);
-    let organized = organizeEvents(onDay);
-
-    let promiseArray = [...organized];
-  
-
-    let  promises = organized.map(async event => {
- 
-      return await updateEvent(event);;
-    })
-
-    Promise.all(promises)
-    .then(() => {
-      getEvents();
-    })
-
-  }
-
-  async function triggerSettingsReorder() {
-    let conditionsMet = true;
-
-
-
-
-    if(conditionsMet) {
-
-      let winnowedList = await checkAndDeleteEvents(eventsList);
-
-      let organized = reorganizeAll(winnowedList);
-
-      let  promises = organized.map(async event => {
- 
-        return await updateEvent(event);;
-      })
-  
-      Promise.all(promises)
-      .then(() => {
-        getEvents();
-      })
-    }
-
-
-  }
-
-  //Checks and deletes dates that are out of bounds
-  async function checkAndDeleteEvents(initList) {
-
-
-    let finalList = []
-    
-    for(let i = 0; i < initList.length; i++) {
-        let cEvent = initList[i];
-
-        if(checkInBounds(cEvent)) {
-          finalList.push(cEvent);
-        } else {
-          await deleteWithoutUpdate(cEvent);
-
-        }
-
-
-    }
-
-    return finalList;
-
-  }
 
   
 
@@ -235,53 +206,31 @@ const getEvents = () => {
   }
 
 
-  function checkInBounds(event) {
+  async function triggerLoadReorder() {
+   let allEvents = await getWithoutUpdate();
+   let formEvents = convertToDate(allEvents);
+   let organized = reorganizeAll(formEvents);
 
+   let  promises = organized.map(async event => {
+ 
+      return await updateEvent(event);;
+    });
 
+    Promise.all(promises)
+      .then(() => {
+        getEvents();
+      });
 
-    let startTime = event.start_time.getHours() + (event.start_time.getMinutes() / 60);
-    let endTime = event.end_time.getHours() + (event.end_time.getMinutes() / 60);
-
-    let scheduledStart = settings.startHour;
-
-    let scheduledEnd = settings.startHour + settings.hourNum;
-
-
-    //Checks if the hours of the day are in bounds
-    if(startTime < scheduledStart || endTime < scheduledStart) {
-      return false;
-    } else if (startTime > scheduledEnd || endTime > scheduledEnd) {
-      return false; 
-    }
-
-
-  let startDate = new Date(event.start_time);
-  let endDate = new Date(event.end_time);
-
-  let scheduleStartDay = new Date(settings.startDate);
-  scheduleStartDay.setHours(0);
-  scheduleStartDay.setMinutes(0);
-
-  let scheduleEndDay = new Date(scheduleStartDay);
-  //This is 0 AM on the day after
-  scheduleEndDay.setDate(scheduleStartDay.getDate() + settings.dayNum);
-
-
-  
-    if(startDate < scheduleStartDay || endDate < scheduleStartDay) {
-      console.log("False 3");
-      return false;
-    } else if(startDate > scheduleEndDay || endDate > scheduleEndDay) {
-
-      return false;
-    }
-
-
-    return true;
   }
 
+  //TODO: Update
+  //Currently, events on different days are fine. But events on same day are shunted off until refresh
+  //Reorganize all works and this doesn't for some reason
+  //I think that is because reorganizeAll isn't trying to update the event? So it isn't actually trying to change backend?
+  //And so before the refresh it is temporarily showing the incorrect database col and span isntead of the the reorganized one?
+  //Perhaps backend doesn't need to be holding the positions at all, though that means it would need to reorganize static schedules every time 
   async function triggerDeleteReorder(deletedEvent) {
-    
+    console.log("Trigger delete reorder called");
     let remainingEvents =  await getWithoutUpdate();
     let formRemainingEvents = convertToDate(remainingEvents);
     
@@ -542,7 +491,7 @@ const convertToDate = (rawEvents) => {
     <LayoutDiv>
       <ScheduleDiv>
         <StyledH1>Event Scheduler</StyledH1>
-        <Schedule settings = {settings} eventsList = {eventsList} deleteEvent={deleteEvent} personalSchedule={calendar.personalSchedule}/>
+        <Schedule settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule}/>
       </ScheduleDiv>
     </LayoutDiv>
   );

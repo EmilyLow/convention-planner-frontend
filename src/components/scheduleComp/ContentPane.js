@@ -11,8 +11,8 @@ import Button from "@material-ui/core/Button";
 
 
 
-function ContentPane({details, deleteEvent, handleClose, personalSchedule}) {
-
+function ContentPane({details, addEvent, deleteEvent, handleClose, personalSchedule}) {
+  
     
 
    
@@ -56,26 +56,28 @@ function ContentPane({details, deleteEvent, handleClose, personalSchedule}) {
         formattedTime = formattedStart + " to " + formattedEnd + ", " + formattedDate;
     }
 
-
+    //TODO Change
     function deleteAction() {
+        console.log("Click delete");
         handleClose();
         deleteEvent(details);
         
     }
 
-    function userAddAction() {
-
+    //TODO Add addEvent;
+    function addAction() {
+        console.log("Click add");
+        handleClose();
+        addEvent(details);
     }
 
-    function userRemoveAction() {
-
-    }
 
     function getButton(userCal) {
+
         if(userCal) {
-            return <Button item xs = {4} variant="outlined" onClick={() => { }}>Remove</Button>;
+            return <Button item xs = {4} variant="outlined" onClick={() => {deleteAction()}}>Remove</Button>;
         } else {
-            return <Button item xs = {4} variant="outlined" onClick={() => { }}>Add</Button>;
+            return <Button item xs = {4} variant="outlined" onClick={() => {addAction()}}>Add</Button>;
         }
     }
 

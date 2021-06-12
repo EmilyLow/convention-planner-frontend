@@ -10,7 +10,7 @@ export default function UserSchedule() {
     //That way the schedule component can do the same thing and not have to know the state of the user itself?
     //Though it might still need to know for adding/removing
     let scheduleId = userData.schedule_id;
-
+    // console.log("Schedule opened");
 
     return(
         <div><p>UserSchedule</p>

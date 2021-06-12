@@ -69,7 +69,7 @@ function App(props) {
   //TODO, update for context
   useEffect(() => {
     let storedValue = localStorage.getItem("loggedInUserId");
-    console.log("Stored value", storedValue);
+    // console.log("Stored value", storedValue);
 
 
     if(storedValue != null) {
@@ -84,7 +84,7 @@ function App(props) {
   function confirmCurrentUser(userId) {
     axios.get("http://localhost:3002/users/" + userId)
     .then((res) => {
-      console.log("COnfirm current user", res);
+      // console.log("COnfirm current user", res);
       setCurrentUser({id: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id})
     })
     .catch((err) => {
