@@ -62,12 +62,16 @@ function ScheduleHolder({scheduleId}) {
       console.log("logged", response.data);
     
       
+      //!!! Temp changed for seed data testing
+      triggerLoadReorder();
 
-      if (response.data.personal_schedule) {
-        triggerLoadReorder();
-      } else {
-        getEvents();
-      }
+
+      //Real version
+      // if (response.data.personal_schedule) {
+      //   triggerLoadReorder();
+      // } else {
+      //   getEvents();
+      // }
     })
     .catch((err) => {
       console.log("Error retrieving calendar", err);
@@ -490,7 +494,6 @@ const convertToDate = (rawEvents) => {
   return (
     <LayoutDiv>
       <ScheduleDiv>
-        <StyledH1>Event Scheduler</StyledH1>
         <Schedule settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule}/>
       </ScheduleDiv>
     </LayoutDiv>
