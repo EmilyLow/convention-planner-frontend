@@ -9,7 +9,7 @@ export default function Home() {
 
     return(
         <div><p>Core</p>
-        <ScheduleHolder scheduleId = {3}/>
+        <ScheduleHolder scheduleId = {scheduleId}/>
         </div>
     ) 
 }

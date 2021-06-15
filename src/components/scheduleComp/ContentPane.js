@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import React from "react";
-import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Location from '@material-ui/icons/LocationOn';
@@ -45,7 +44,7 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
     let formattedDate;
     let formattedTime;
 
-    if(Object.keys(details).length != 0) {
+    if(Object.keys(details).length !== 0) {
 
         let startTimeValue = details.start_time;
         let endTimeValue = details.end_time;
@@ -83,11 +82,13 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
 
     return(<EventDiv>
         <Grid container>
+            {/* Note: Temporary for testing */}
+            <Grid><p>{details.id}</p></Grid>
              <Grid item xs={12}> <Typography variant={'h5'}>{details.event_name}</Typography> </Grid>
              <Grid item xs={12}><Typography variant={'subtitle1'}> {formattedTime}</Typography> </Grid>
 
              <Grid item xs={12}> <Divider style={{marginBottom:'8px'}} /> </Grid>
-
+             
      
 
             { details.location !== "" && <Grid item xs = {2}><Location/> </Grid>}
@@ -104,15 +105,13 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
                {getButton(personalSchedule)}
            
            </Grid> 
+           
         </Grid>
             
     </EventDiv>)
 }
 
-const EventCard = styled(Card)`
-    margin: 5px;
 
-`;
 
 const EventDiv = styled.div`
     margin: 8px;

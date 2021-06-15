@@ -35,31 +35,18 @@ function ScheduleHolder({scheduleId}) {
   useEffect( () => {
     // console.log("Use Effect", scheduleId);
     getCalendar();
-    // let persSchedule = scheduleData.personal_schedule;
-    // getCalender calls getEvents after completion
 
-    
-
-    //Alt
-    //If personal schedule
-    //triggerLoadReorder
-    //else just getEvents()
-    // if (persSchedule) {
-    //   triggerLoadReorder();
-    // } else {
-    //   getEvents();
-    // }
   }, [scheduleId]);
 
  
 
   const getCalendar = () => {
     // console.log("sched id", scheduleId);
-    axios.get(url + "/schedules" + "/" + scheduleId)
+    axios.get(url + "/schedules/"  + scheduleId)
     .then((response) => {
       // console.log("Get Calender then");
       setCalendar(response.data);
-      console.log("logged", response.data);
+  
     
       
       //!!! Temp changed for seed data testing
@@ -84,7 +71,7 @@ function ScheduleHolder({scheduleId}) {
 
 const getEvents = (personalSchedule) => {
   
-  axios.get(url + "/schedules" + "/" + scheduleId + "/events")
+  axios.get(url + "/schedules/" + scheduleId + "/events")
   .then((response) => {
 
     setEventsList(convertToDate(response.data));
@@ -110,7 +97,7 @@ const getEvents = (personalSchedule) => {
 
    let results;
 
-   await axios.get(url + "/schedules" + "/" + scheduleId + "/events")
+   await axios.get(url + "/schedules/" + scheduleId + "/events")
    .then((response) => {
 
     results = response.data;
@@ -120,15 +107,7 @@ const getEvents = (personalSchedule) => {
    return results;
  }
 
- const deleteWithoutUpdate = async (event) => {
-  let id = event.id;
 
-  axios.delete(url + "/events/" + id)
-  .then(() => {
-    return 1; 
-  })
-   .catch(error => console.error(`Error: ${error}`))
- }
 
  //This creates a promise to update the event, and does not actually update it directly. 
  const updateEvent = (event) => {
@@ -482,13 +461,7 @@ const convertToDate = (rawEvents) => {
   return eventsOnDay;
 }
 
- function getRandomColor() {
-   let colors = ["#ffb3ba", "#ffdfba", "#ffffba", "#baffc9", "#bae1ff" ];
 
-   let num = Math.floor(Math.random() * colors.length);
-
-   return colors[num];
- }
 
 
   return (
@@ -502,10 +475,7 @@ const convertToDate = (rawEvents) => {
 
 export default ScheduleHolder;
 
-const StyledH1 = styled.h1`
-  margin-bottom: 30px;
 
-`;
 
 const ScheduleDiv = styled.div`
   display: flex;
@@ -513,12 +483,7 @@ const ScheduleDiv = styled.div`
   align-items: center;
 `;
 
-const FormDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 50px;
-`;
+
 
 const LayoutDiv = styled.div`
   display: flex;

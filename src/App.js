@@ -104,11 +104,6 @@ function App(props) {
 
   
 
-  let [tabValue, setTabValue] = new React.useState(0);
-
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  }
 
   
 

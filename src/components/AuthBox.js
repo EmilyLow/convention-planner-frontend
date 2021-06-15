@@ -51,7 +51,7 @@ export default function AuthBox(props) {
 
     //TODO : Fix
     const userData = useContext(UserContext);
-    console.log("User Data", userData);
+
 
 
     const classes = useStyles();
