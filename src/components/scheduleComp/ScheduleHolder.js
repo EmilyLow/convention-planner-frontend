@@ -19,9 +19,9 @@ function ScheduleHolder({scheduleId}) {
 //  console.log("Schedule id", scheduleId);
 
   const settings = {
-    dayNum: 3,
-    hourNum: 15,
-    startHour: 9,
+    dayNum: 4,
+    hourNum: 16,
+    startHour: 8,
     startDate: new Date(2019, 7, 22)
   };
  
