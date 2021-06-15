@@ -5,11 +5,15 @@ import styled from "styled-components";
 import Schedule from "./Schedule";
 import UserContext from "../utils/UserContext";
 
+import organizeEvents2 from "../utils/organization";
+
 //TODO: Figure out why refreshing temporarily breaks user schedule
 //Okay its doing that because scheduleId is starting as undefined for "Your Schedule"
 //And that's happening because for userschedule, schedule_id comes from context, while its hard defined in the others
 
 function ScheduleHolder({scheduleId}) {
+
+  // console.log("Schedule holder for", scheduleId);
   
  // TODO: Get current schedule object? 
  //Base state of buttons (add/remove) off of schedule objects? 
@@ -31,9 +35,9 @@ function ScheduleHolder({scheduleId}) {
 
   const url = 'http://localhost:3002';
 
-  //Changing this to scheduleId instead of once seems to have fixed problem with events not showing on refresh
+
   useEffect( () => {
-    // console.log("Use Effect", scheduleId);
+ 
     getCalendar();
 
   }, [scheduleId]);
@@ -41,10 +45,10 @@ function ScheduleHolder({scheduleId}) {
  
 
   const getCalendar = () => {
-    // console.log("sched id", scheduleId);
+ 
     axios.get(url + "/schedules/"  + scheduleId)
     .then((response) => {
-      // console.log("Get Calender then");
+
       setCalendar(response.data);
   
     
@@ -76,19 +80,6 @@ const getEvents = (personalSchedule) => {
 
     setEventsList(convertToDate(response.data));
 
-    //Previous version
-    // let dataConverted = convertToDate(response.data);
-    
-    // //TODO: Figure why it shunts itself into "get events else" after refresh
-    // if (personalSchedule) {
-    //   // console.log("Get events if");
-    //   let dataOrganized = reorganizeAll(dataConverted);
-    //   setEventsList(dataOrganized);
-    // } else {
-    //   // console.log("Get events else");
-    //   setEventsList(dataConverted);
-    // }
-      
   })
   .catch(error => console.error(`Error: ${error}`))
 }
@@ -121,10 +112,7 @@ const getEvents = (personalSchedule) => {
    .catch(error => console.error(`Error: ${error}`))
  }
 
- //TODO: Figure why this breaks things before a refresh. 
- //TODO: Need to find a way to tell UserSchedule to reorder after deletion
- //But the delete button should actually belong to userSchedule so it should work? 
- //So triggerDeleteReorder is probably broken
+
  const deleteEvent = (event) => {
 
    let id = event.id;
@@ -160,9 +148,9 @@ const getEvents = (personalSchedule) => {
       color: event.color
     };
 
-    console.log(formEvent);
+
     axios.post(url + "/events", formEvent)
-    .then((res) => console.log(res))
+    .then((res) => {})
     .catch(error => console.error(`Error: ${error}`))
   }
 }
@@ -173,6 +161,7 @@ const getEvents = (personalSchedule) => {
 
   //Reorganizes all dates
   function reorganizeAll(unorganizedList) {
+    // console.log("Reorganize all");
     let startDate = new Date(settings.startDate);
     let allEvents = [];
     for(let i = 0; i <settings.dayNum; i++) {
@@ -180,7 +169,11 @@ const getEvents = (personalSchedule) => {
       currentDate.setDate(startDate.getDate() + i);
 
       let eventSubset = getEventsOnDay(unorganizedList, currentDate);
-      let organizedSubset = organizeEvents(eventSubset);
+  
+      //ToDo: This is where the change is
+      // let organizedSubset = organizeEvents(eventSubset);
+
+      let organizedSubset = organizeEvents2(eventSubset, i);
 
       allEvents = [...allEvents, ...organizedSubset];
     }
@@ -190,6 +183,7 @@ const getEvents = (personalSchedule) => {
 
 
   async function triggerLoadReorder() {
+    
    let allEvents = await getWithoutUpdate();
    let formEvents = convertToDate(allEvents);
    let organized = reorganizeAll(formEvents);
@@ -206,19 +200,15 @@ const getEvents = (personalSchedule) => {
 
   }
 
-  //TODO: Update
-  //Currently, events on different days are fine. But events on same day are shunted off until refresh
-  //Reorganize all works and this doesn't for some reason
-  //I think that is because reorganizeAll isn't trying to update the event? So it isn't actually trying to change backend?
-  //And so before the refresh it is temporarily showing the incorrect database col and span isntead of the the reorganized one?
-  //Perhaps backend doesn't need to be holding the positions at all, though that means it would need to reorganize static schedules every time 
+ 
   async function triggerDeleteReorder(deletedEvent) {
-    console.log("Trigger delete reorder called");
+   
     let remainingEvents =  await getWithoutUpdate();
     let formRemainingEvents = convertToDate(remainingEvents);
     
     let remainingOnDay = getEventsOnDay(formRemainingEvents, deletedEvent.start_time);
 
+    
     let organized = organizeEvents(remainingOnDay);
 
     let promises = organized.map(async event => {
@@ -230,7 +220,6 @@ const getEvents = (personalSchedule) => {
       getEvents();
     })
   }
-
 
 
 
@@ -252,7 +241,10 @@ const convertToDate = (rawEvents) => {
 
   //Note, assumes all events are on a single day
   function organizeEvents(rawEvents) {
+   
+   
 
+    
     if(rawEvents.length === 0) {
       return [];
     }
@@ -347,7 +339,7 @@ const convertToDate = (rawEvents) => {
                         break;
                         
                     } else if (x === slots.length -1) {
-                        console.log("Error, found no open slot");
+                        console.log("Error, found no open slot for", intEvent.id);
                      
                         intEvent.start_col = origCol;
                     } else {
@@ -363,15 +355,24 @@ const convertToDate = (rawEvents) => {
     return addedEvents;
   }
 
+
+
+
   //This checks for an intersection in grid placement. 
   function checkPhysicalInt(event1, event2) {
-
+    let logThis = false;
+    if(event1.id === 234 || event1.id === 235 || event1.id === 236 || event2.id === 234 || event2.id === 235 || event2.id === 236) {
+      logThis = false;
+      // console.log("_____")
+      // console.log("Check physical intersection for: ", event1.id, event2.id);
+    }
     //Error check
     if(event1.start_col === 0 || event2.start_col === 0 || event1.span === 0 || event2.span === 0) {
         console.log("Error! Undefined physical placement");
     }
 
     if(checkTimeInt(event1, event2) === false) {
+        if (logThis) console.log("Time intersection false");
         return false;
     } else {
         //Subtracted by 0.1 so shared boundaries don't count as intersection.
@@ -382,8 +383,10 @@ const convertToDate = (rawEvents) => {
         let minEnd = min(end_col1, end_col2);
 
         if(maxStart <= minEnd) {
+          if (logThis) console.log("Returns true");
             return true;
         } else {
+          if (logThis) console.log("Returns false");
             return false;
         }
     }

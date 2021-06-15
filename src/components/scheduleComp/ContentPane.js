@@ -57,7 +57,7 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
 
     //TODO Change
     function deleteAction() {
-        console.log("Click delete");
+  
         handleClose();
         deleteEvent(details);
         
@@ -65,7 +65,7 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
 
     //TODO Add addEvent;
     function addAction() {
-        console.log("Click add");
+
         handleClose();
         addEvent(details);
     }
@@ -74,9 +74,9 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
     function getButton(userCal) {
 
         if(userCal) {
-            return <Button item xs = {4} variant="outlined" onClick={() => {deleteAction()}}>Remove</Button>;
+            return <Button  xs = {4} variant="outlined" onClick={() => {deleteAction()}}>Remove</Button>;
         } else {
-            return <Button item xs = {4} variant="outlined" onClick={() => {addAction()}}>Add</Button>;
+            return <Button  xs = {4} variant="outlined" onClick={() => {addAction()}}>Add</Button>;
         }
     }
 
