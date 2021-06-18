@@ -26,6 +26,9 @@ function ScheduleHolder({scheduleId}) {
   const [eventsList, setEventsList] = useState([]);
   const [calendar, setCalendar] = useState({});
 
+  //Or should I have zero be the guest calendar?
+  const [guestCalendar, setGuestCalendar] = useState(false);
+
 
   const url = 'http://localhost:3002';
 
@@ -121,8 +124,9 @@ const getEvents = (personalSchedule) => {
 
  const addEvent = (event) => {
  
-
-  let personalScheduleId = userData.schedule_id;
+  //TODO: Fix nonmatching schedule_id && scheduleId, same with userId and id
+  let personalScheduleId = userData.scheduleId;
+  console.log(userData);
 
   if(personalScheduleId === 0) {
     console.log("Error: Can't add event to guest schedule.");

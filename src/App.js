@@ -74,12 +74,13 @@ function App(props) {
 
   const [currentUser, setCurrentUser] = useState({userId: 0, scheduleId: 0, username: 'Guest'});
 
+
   //Setting currentUser from localStorage on load
   //Possibly this should be done in useState intializing 
   //TODO, update for context
   useEffect(() => {
     let storedValue = localStorage.getItem("loggedInUserId");
-    // console.log("Stored value", storedValue);
+   
 
 
     if(storedValue != null) {
@@ -95,7 +96,7 @@ function App(props) {
     axios.get("http://localhost:3002/users/" + userId)
     .then((res) => {
       // console.log("COnfirm current user", res);
-      setCurrentUser({id: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id})
+      setCurrentUser({userId: res.data.id, username: res.data.username, scheduleId: res.data.schedule_id})
     })
     .catch((err) => {
       console.log("Error confirming current user", err);

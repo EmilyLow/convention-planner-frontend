@@ -61,7 +61,7 @@ export default function AuthBox(props) {
     
 
         const handleLogOut = () => {
-            props.setCurrentUser({userId: 0, username: 'Guest'});
+            props.setCurrentUser({userId: 0, scheduleId: 0, username: 'Guest'});
             localStorage.setItem("token", "");
             // localStorage.setItem("loggedInUser", "Guest");
             localStorage.setItem("loggedInUserId", 0);
