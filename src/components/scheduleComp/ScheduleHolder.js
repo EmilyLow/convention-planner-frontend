@@ -7,20 +7,14 @@ import UserContext from "../utils/UserContext";
 
 import organizeEvents2 from "../utils/organization";
 
-//TODO: Figure out why refreshing temporarily breaks user schedule
-//Okay its doing that because scheduleId is starting as undefined for "Your Schedule"
-//And that's happening because for userschedule, schedule_id comes from context, while its hard defined in the others
 
 function ScheduleHolder({scheduleId}) {
 
-  // console.log("Schedule holder for", scheduleId);
-  
- // TODO: Get current schedule object? 
- //Base state of buttons (add/remove) off of schedule objects? 
- //TODO, make it so it only reorganizes user calendar when first getting events?
+
+
 
  const userData = useContext(UserContext);
-//  console.log("Schedule id", scheduleId);
+
 
   const settings = {
     dayNum: 4,
@@ -31,7 +25,7 @@ function ScheduleHolder({scheduleId}) {
  
   const [eventsList, setEventsList] = useState([]);
   const [calendar, setCalendar] = useState({});
-  //personal_schedule
+
 
   const url = 'http://localhost:3002';
 
@@ -161,7 +155,7 @@ const getEvents = (personalSchedule) => {
 
   //Reorganizes all dates
   function reorganizeAll(unorganizedList) {
-    // console.log("Reorganize all");
+   
     let startDate = new Date(settings.startDate);
     let allEvents = [];
     for(let i = 0; i <settings.dayNum; i++) {
@@ -211,7 +205,12 @@ const getEvents = (personalSchedule) => {
     
     let organized = organizeEvents(remainingOnDay);
 
-    let promises = organized.map(async event => {
+    let dayNum = dateDiff(settings.startDate, deletedEvent.start_time);
+
+    
+    let organized2 = organizeEvents2(remainingOnDay, dayNum);
+
+    let promises = organized2.map(async event => {
       return await updateEvent(event);
     })
 
