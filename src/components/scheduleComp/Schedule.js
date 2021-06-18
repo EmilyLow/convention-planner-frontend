@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Popover from '@material-ui/core/Popover';
-import React from "react";
+import React, {useRef} from "react";
 import ContentPane from "./ContentPane";
 
 
@@ -10,6 +10,8 @@ function Schedule(props) {
 
     let {settings, eventsList, addEvent, deleteEvent, personalSchedule} = props;
 
+    const eventRef = useRef();
+    // console.log("Schedule ref", eventRef);
  
 
 const [anchorEl, setAnchorEl] = React.useState(null);
@@ -98,7 +100,7 @@ const id = open ? "simple-popover" : undefined;
             {hourLabels}
             {hours}
              {eventsList.map(listing => { 
-                    return <Event handleClick = {handleClick} key = {listing.id} details = {listing} settings={settings} deleteEvent = {deleteEvent}/>;
+                    return <Event ref={eventRef} handleClick = {handleClick} key = {listing.id} details = {listing} settings={settings} deleteEvent = {deleteEvent}/>;
                  })}
                  <Popover
           id={id}

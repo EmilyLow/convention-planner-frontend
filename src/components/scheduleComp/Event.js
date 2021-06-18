@@ -1,3 +1,4 @@
+import {useRef, useLayoutEffect} from "react";
 import styled from "styled-components";
 import React from "react";
 
@@ -10,13 +11,29 @@ const useStyles = makeStyles((theme) => ({
     },
     color: {
       color: "#FFFAFA",
+    },
+    abbreviateStyle: {
+
+    },
+    allowOverflowStyle: {
+
     }
   }));
   
 
 function Event({details, settings, deleteEvent, handleClick}) {
 
+  // const eventRef = React.createRef();
 
+
+  // useLayoutEffect(() => {
+  //   // if (eventRef.current.clientWidth < eventRef.current.scrollWidth) {
+  //   //   console.log(details.event_name + "has overflow");
+
+  //   // }
+  //   console.log(eventRef);
+
+  // }, [eventRef]);
 
     let startTimeValue = details.start_time.getHours() +(details.start_time.getMinutes() /60);
     let endTimeValue = details.end_time.getHours() + (details.end_time.getMinutes() / 60);
@@ -27,7 +44,7 @@ function Event({details, settings, deleteEvent, handleClick}) {
 
     return(
       
-        <EventStyle onClick={ e => handleClick(e, details)} details={details} startTimeValue = {startTimeValue} endTimeValue = {endTimeValue} length = {length} startHour = {settings.startHour}>
+        <EventStyle  onClick={ e => handleClick(e, details)} details={details} startTimeValue = {startTimeValue} endTimeValue = {endTimeValue} length = {length} startHour = {settings.startHour}>
 
             <Label className={classes.color}>{details.event_name}</Label>
         </EventStyle>
