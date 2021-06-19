@@ -11,6 +11,8 @@ export default function UserSchedule() {
     //Though it might still need to know for adding/removing
     let scheduleId = userData.scheduleId;
     // console.log("Schedule opened");
+    console.log("User data", userData );
+    console.log(scheduleId);
 
     return(
         <div><p>UserSchedule</p>

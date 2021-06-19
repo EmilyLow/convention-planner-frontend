@@ -10,11 +10,11 @@ import organizeEvents from "../utils/organization";
 
 function ScheduleHolder({scheduleId}) {
 
-
+ console.log(scheduleId);
 
 
  const userData = useContext(UserContext);
-
+  console.log(userData);
 
   const settings = {
     dayNum: 4,
@@ -26,8 +26,7 @@ function ScheduleHolder({scheduleId}) {
   const [eventsList, setEventsList] = useState([]);
   const [calendar, setCalendar] = useState({});
 
-  //Or should I have zero be the guest calendar?
-  const [guestCalendar, setGuestCalendar] = useState(false);
+
 
 
   const url = 'http://localhost:3002';
@@ -72,6 +71,10 @@ function ScheduleHolder({scheduleId}) {
 
 const getEvents = (personalSchedule) => {
   
+  //TODO
+  //Check for Guest & Personal Calendar
+  //If both, pull events from local storage
+
   axios.get(url + "/schedules/" + scheduleId + "/events")
   .then((response) => {
 
@@ -84,6 +87,10 @@ const getEvents = (personalSchedule) => {
  const getWithoutUpdate = async () => {
 
    let results;
+
+    //TODO
+    //Check for Guest & Personal Calendar
+    //If both, pull events from local storage
 
    await axios.get(url + "/schedules/" + scheduleId + "/events")
    .then((response) => {
@@ -114,6 +121,10 @@ const getEvents = (personalSchedule) => {
 
    let id = event.id;
 
+   //TODO
+   //Check if user is guest user
+   //If so, delete from local storage
+
    axios.delete(url + "/events/" + id)
    .then((response) => {
     triggerDeleteReorder(event);
@@ -124,12 +135,17 @@ const getEvents = (personalSchedule) => {
 
  const addEvent = (event) => {
  
-  //TODO: Fix nonmatching schedule_id && scheduleId, same with userId and id
+  //TODO: Add Guest data to local storage. 
   let personalScheduleId = userData.scheduleId;
   console.log(userData);
 
   if(personalScheduleId === 0) {
     console.log("Error: Can't add event to guest schedule.");
+    //Pull all events from local storage
+    //Unstringify into array
+    //Add new event
+    //Stringify and put back
+
   } else {
     let formEvent = {
       event_name: event.event_name,
