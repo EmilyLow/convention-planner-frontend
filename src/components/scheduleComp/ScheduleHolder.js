@@ -7,14 +7,15 @@ import UserContext from "../utils/UserContext";
 
 import organizeEvents from "../utils/organization";
 
+//TODO: Fixed logging in but add/deleting broken
 
 function ScheduleHolder({scheduleId}) {
 
- console.log(scheduleId);
+ console.log("schedule id", scheduleId);
 
 
  const userData = useContext(UserContext);
-  console.log(userData);
+  // console.log(userData);
 
   const settings = {
     dayNum: 4,

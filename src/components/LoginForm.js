@@ -1,4 +1,7 @@
 
+import { useContext} from "react";
+import UserContext from "./utils/UserContext";
+
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,10 +19,6 @@ const useStyles = makeStyles( theme => ({
      
         padding: theme.spacing(2)
       },
-    dialogStyle: props => ({
-    //   background: theme.palette.primary.main,
-    //   color: theme.palette.primary.contrastText,
-    }),
     textFieldStyle: props => ({
         padding: theme.spacing(1)
         // background: "#FFFFFF", //White
@@ -28,13 +27,7 @@ const useStyles = makeStyles( theme => ({
     buttonStyle: props => ({
         padding: theme.spacing(1)
         // color: "#FFFFFF" //White
-    }),
-    logInSpread: props => ({
-        display: "flex",
-        justifyContent: "center",
-        
-    
-      })
+    })
   }));
 
 export default function LoginForm(props) {
@@ -42,8 +35,10 @@ export default function LoginForm(props) {
     const classes = useStyles();
     const {handleSubmit, control } = useForm();
 
+    // const {setUserDataContext, userData} = useContext(UserContext);
+
     //Change location of this or use Context
-    // const [currentUser, setCurrentUser] = useState("Guest");
+    const {currentUser, setCurrentUser} = useContext(UserContext);
 
 
     const onSubmit = data => {
@@ -56,17 +51,17 @@ export default function LoginForm(props) {
 
     const logInUser = (values) => {
         //TODO Figure out why id is not being passed
-
+        console.log("Log in results");
         axiosWithAuth()
         .post("http://localhost:3002/users/auth/login", values)
         .then((res) => {
             console.log("Log in res", res);
 
             localStorage.setItem("token", res.data.token);
-            // localStorage.setItem("loggedInUser", res.data.username);
             localStorage.setItem("loggedInUserId", res.data.id);
            
-            props.setCurrentUser({userId: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id});
+            setCurrentUser({userId: res.data.id, username: res.data.username, scheduleId: res.data.schedule_id});
+            // setUserDataContext({userId: res.data.id, username: res.data.username, scheduleId: res.data.scheduleId});
             props.handleClose();
             //TODO: currently a failed login errors out without informing the user outside of the console
             //TODO: Set Log In/ Sign up to change if logged in

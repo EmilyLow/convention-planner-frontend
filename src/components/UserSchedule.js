@@ -9,10 +9,10 @@ export default function UserSchedule() {
     //Get correct schedule id from currently logged in user, and then pass
     //That way the schedule component can do the same thing and not have to know the state of the user itself?
     //Though it might still need to know for adding/removing
-    let scheduleId = userData.scheduleId;
+    let scheduleId = userData.currentUser.scheduleId;
     // console.log("Schedule opened");
-    console.log("User data", userData );
-    console.log(scheduleId);
+    console.log("User schedule, User data", userData );
+    // console.log(scheduleId);
 
     return(
         <div><p>UserSchedule</p>

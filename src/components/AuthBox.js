@@ -17,20 +17,6 @@ import SignUpForm from "./SignUpForm";
 
 const useStyles = makeStyles( theme => ({
 
-
-    dialogStyle: props => ({
-    //   background: theme.palette.primary.main,
-    //   color: theme.palette.primary.contrastText,
-    }),
-    textFieldStyle: props => ({
-        padding: theme.spacing(1)
-        // background: "#FFFFFF", //White
-        // padding: theme.spacing(1),
-    }),
-    buttonStyle: props => ({
-        padding: theme.spacing(1)
-        // color: "#FFFFFF" //White
-    }),
     logInSpread: props => ({
         display: "flex",
         justifyContent: "center",
@@ -50,8 +36,9 @@ const useStyles = makeStyles( theme => ({
 export default function AuthBox(props) {
 
     //TODO : Fix
-    const userData = useContext(UserContext);
+    const {currentUser, setCurrentUser} = useContext(UserContext);
 
+    //TODO: Logging in (without refreshing) does not update userContext
 
 
     const classes = useStyles();
@@ -61,10 +48,11 @@ export default function AuthBox(props) {
     
 
         const handleLogOut = () => {
-            props.setCurrentUser({userId: 0, scheduleId: 0, username: 'Guest'});
+            setCurrentUser({userId: 0, scheduleId: 0, username: 'Guest'});
             localStorage.setItem("token", "");
-            // localStorage.setItem("loggedInUser", "Guest");
+
             localStorage.setItem("loggedInUserId", 0);
+            // console.log(localStorage);
         }
 
         const handleLogInOpen = () => {
@@ -83,7 +71,7 @@ export default function AuthBox(props) {
           }
 
           //TODO switch to context
-    if(userData.userId === 0) {
+    if(currentUser.userId === 0) {
         return(
             <Box className={classes.logInSpread}>
             <Button color="secondary" onClick={handleLogInOpen}>Log In</Button>  
@@ -113,7 +101,7 @@ export default function AuthBox(props) {
     }  else {
         return (
             <Box className={classes.logInSpread}>
-             <Typography variant="h6" color="secondary"> {userData.username}   </Typography>
+             <Typography variant="h6" color="secondary"> {currentUser.username}   </Typography>
             {/* <Dialog  open={logInOpen} onClose = {handleDialogueClose}>
                 <Box className = {classes.dialogStyle}>
                     <DialogTitle>Log In</DialogTitle>
