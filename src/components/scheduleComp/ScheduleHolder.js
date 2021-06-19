@@ -137,8 +137,8 @@ const getEvents = (personalSchedule) => {
  const addEvent = (event) => {
  
   //TODO: Add Guest data to local storage. 
-  let personalScheduleId = userData.scheduleId;
-  console.log(userData);
+  let personalScheduleId = userData.currentUser.scheduleId;
+  // console.log(userData);
 
   if(personalScheduleId === 0) {
     console.log("Error: Can't add event to guest schedule.");
@@ -148,6 +148,7 @@ const getEvents = (personalSchedule) => {
     //Stringify and put back
 
   } else {
+   
     let formEvent = {
       event_name: event.event_name,
       schedule_id: personalScheduleId,
@@ -163,7 +164,9 @@ const getEvents = (personalSchedule) => {
 
 
     axios.post(url + "/events", formEvent)
-    .then((res) => {})
+    .then((res) => {
+      console.log("Post res", res);
+    })
     .catch(error => console.error(`Error: ${error}`))
   }
 }
