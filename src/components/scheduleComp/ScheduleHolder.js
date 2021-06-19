@@ -7,7 +7,10 @@ import UserContext from "../utils/UserContext";
 
 import organizeEvents from "../utils/organization";
 
-//TODO: Fixed logging in but add/deleting broken
+//TODO: DATE FORMAT CONVERSIONS OR LACK THEREOF when stringifying
+//Messing with it seems to show that date details are preserved when going back and forth between stringifying and not
+//NOTE! For Get and Update, cannot assume schedule is a personal schedule, need to check that. 
+
 
 function ScheduleHolder({scheduleId}) {
 
@@ -72,65 +75,103 @@ function ScheduleHolder({scheduleId}) {
 
 const getEvents = (personalSchedule) => {
   
-  //TODO
-  //Check for Guest & Personal Calendar
-  //If both, pull events from local storage
 
-  axios.get(url + "/schedules/" + scheduleId + "/events")
-  .then((response) => {
 
-    setEventsList(convertToDate(response.data));
+  // if(userData.currentUser.scheduleId === 0) {
+  //   setEventsList(JSON.parse(localStorage.guestEvents));
 
-  })
-  .catch(error => console.error(`Error: ${error}`))
+  // } else {
+    axios.get(url + "/schedules/" + scheduleId + "/events")
+    .then((response) => {
+
+      setEventsList(convertToDate(response.data));
+
+    })
+    .catch(error => console.error(`Error: ${error}`))
+
+  // }
+
+  
 }
 
  const getWithoutUpdate = async () => {
 
    let results;
 
-    //TODO
-    //Check for Guest & Personal Calendar
-    //If both, pull events from local storage
 
-   await axios.get(url + "/schedules/" + scheduleId + "/events")
-   .then((response) => {
+    // if(userData.currentUser.scheduleId === 0) {
+    //   results = JSON.parse(localStorage.guestEvents);
+  
+    // } else {
 
-    results = response.data;
-   })
-   .catch(error => console.error(`Error: ${error}`))
+      await axios.get(url + "/schedules/" + scheduleId + "/events")
+      .then((response) => {
 
-   return results;
+        results = response.data;
+      })
+      .catch(error => console.error(`Error: ${error}`))
+
+    // }
+
+    return results;
  }
 
 
-
+ //TODO: ALTER FOR GUEST USER
  //This creates a promise to update the event, and does not actually update it directly. 
  const updateEvent = (event) => {
    let id = event.id;
+   console.log("Update event", event);
+
+   if(userData.currentUser.scheduleId === 0) {
    
+    //TODO: Check if this works fine
+      return () => {for(var i in eventsList) {
+        if(eventsList[i].id === event.id) {
+          eventsList[i] = event;
+          break;
+        }
+      }};
 
-  return axios.put(url + "/events/" + id, event)
-   .then((response) => {
+   } else {
+      return axios.put(url + "/events/" + id, event)
+      .then((response) => {
+  
+      })
+      .catch(error => console.error(`Error: ${error}`))
+   }
 
-   })
-   .catch(error => console.error(`Error: ${error}`))
+
  }
 
 
  const deleteEvent = (event) => {
 
-   let id = event.id;
+   let eventId = event.id;
 
-   //TODO
-   //Check if user is guest user
-   //If so, delete from local storage
+   let personalScheduleId = userData.currentUser.scheduleId;
 
-   axios.delete(url + "/events/" + id)
-   .then((response) => {
-    triggerDeleteReorder(event);
-   })
-   .catch(error => console.error(`Error: ${error}`))
+  //  if(personalScheduleId === 0) {
+    
+
+  
+  //   let indexOfEvent = eventsList.findIndex(i => i.id === event.id);
+  //   console.log("in delete", indexOfEvent);
+  //   let shortenedEvents = [...eventsList].splice(indexOfEvent, 1);
+  //   localStorage.setItem("guestEvents", JSON.stringify(shortenedEvents));
+
+  //   triggerDeleteReorder(event);
+
+  // } else {
+
+
+    axios.delete(url + "/events/" + eventId)
+    .then((response) => {
+      triggerDeleteReorder(event);
+    })
+    .catch(error => console.error(`Error: ${error}`))
+
+  // }
  }
 
 
@@ -140,32 +181,41 @@ const getEvents = (personalSchedule) => {
   let personalScheduleId = userData.currentUser.scheduleId;
   // console.log(userData);
 
+  let formEvent = {
+    event_name: event.event_name,
+    schedule_id: personalScheduleId,
+    speaker: event.speaker,
+    summary: event.description,
+    location: event.location,
+    start_time: event.start_time,
+    end_time: event.end_time,
+    start_col: 0,
+    span: 0,
+    color: event.color
+  };
+
   if(personalScheduleId === 0) {
-    console.log("Error: Can't add event to guest schedule.");
-    //Pull all events from local storage
-    //Unstringify into array
-    //Add new event
-    //Stringify and put back
+   
+
+    let allEvents = [...eventsList, formEvent];
+    //TODO Check if this being a shallow copy is a problem
+    localStorage.setItem("guestEvents", JSON.stringify([...allEvents]));
+  //   console.log(allEvents);
+  //  let stringOf = JSON.stringify([...allEvents]);
+  //  let unStringed = JSON.parse(stringOf);
+  //  console.log("Unstringed", unStringed);
+   
+  //  console.log(allEvents[0].start_time);
+  //  console.log(new Date(unStringed[0].start_time));
 
   } else {
    
-    let formEvent = {
-      event_name: event.event_name,
-      schedule_id: personalScheduleId,
-      speaker: event.speaker,
-      summary: event.description,
-      location: event.location,
-      start_time: event.start_time,
-      end_time: event.end_time,
-      start_col: 0,
-      span: 0,
-      color: event.color
-    };
+    
 
 
     axios.post(url + "/events", formEvent)
     .then((res) => {
-      console.log("Post res", res);
+      // console.log("Post res", res);
     })
     .catch(error => console.error(`Error: ${error}`))
   }
