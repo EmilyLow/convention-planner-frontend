@@ -24,11 +24,7 @@ import {
 
 
 import Home from "./components/Home";
-import Core from "./components/Core";
-import Talks from "./components/Talks";
-import Games from "./components/Games";
-import Shows from "./components/Shows";
-import UserSchedule from "./components/UserSchedule";
+import Page from "./components/Page";
 import AuthBox from "./components/AuthBox";
 
 
@@ -88,8 +84,7 @@ function App(props) {
         //Note, does it matter if I use parsed one here?
         axios.get("http://localhost:3002/users/" + parsedId)
       .then((res) => {
-        // console.log("COnfirm current user", res);
-        // console.log("confirmCurrentuser res", res.data);
+  
         setCurrentUser({userId: res.data.id, username: res.data.username, scheduleId: res.data.schedule_id})
       })
       .catch((err) => {
@@ -134,19 +129,19 @@ function App(props) {
 
       <Switch>
         <Route path = "/core">
-          <Core/>
+          <Page scheduleId={1}/>
         </Route>
         <Route path="/talks">
-          <Talks />
+          <Page scheduleId={2}/>
         </Route>
         <Route path="/games">
-          <Games />
+          <Page scheduleId={3}/>
         </Route>
         <Route path="/shows">
-          <Shows />
+          <Page scheduleId={4}/>
         </Route>
         <Route path = "/your-schedule">
-          <UserSchedule/>
+          <Page scheduleId ={0}/>
         </Route>
         <Route path="/">
           <Home />

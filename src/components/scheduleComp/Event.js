@@ -71,7 +71,8 @@ const EventStyle = styled.div`
 
 const Label = styled.p`
   margin: 0px;
-  padding-top: 4px;
+  // padding-top: 4px;
+  padding: 4px 2px 0px 2px;
   //display: flex;
   //justify-content: center;
   //align-items: center;

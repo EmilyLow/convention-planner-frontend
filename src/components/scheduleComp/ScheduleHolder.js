@@ -189,9 +189,7 @@ const getEvents = (personalSchedule) => {
 
 
   let personalScheduleId = userData.currentUser.scheduleId;
-  console.log("personalScheduleId", personalScheduleId);
-
- 
+   
   let formEvent = {
     event_name: event.event_name,
     schedule_id: personalScheduleId,

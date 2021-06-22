@@ -134,7 +134,7 @@ export default Schedule;
 
 const ScheduleContainer = styled.div`
     display: grid;
-    grid-template-columns: 50px repeat(calc(12 * ${(props) => props.settings.dayNum}), 16px);
+    grid-template-columns: 50px repeat(calc(12 * ${(props) => props.settings.dayNum}), 20px);
     grid-template-rows: 80px repeat(${(props) => props.settings.hourNum * 4}, 10px);
 
   

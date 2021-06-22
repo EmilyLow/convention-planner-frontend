@@ -83,7 +83,7 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
     return(<EventDiv>
         <Grid container>
             {/* Note: Temporary for testing */}
-            <Grid><p>{details.id}</p></Grid>
+            {/* <Grid><p>{details.id}</p></Grid> */}
              <Grid item xs={12}> <Typography variant={'h5'}>{details.event_name}</Typography> </Grid>
              <Grid item xs={12}><Typography variant={'subtitle1'}> {formattedTime}</Typography> </Grid>
 
