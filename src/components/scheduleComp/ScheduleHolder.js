@@ -7,21 +7,15 @@ import UserContext from "../utils/UserContext";
 
 import organizeEvents from "../utils/organization";
 
-//TODO: DATE FORMAT CONVERSIONS OR LACK THEREOF when stringifying
-//Messing with it seems to show that date details are preserved when going back and forth between stringifying and not
-//NOTE! For Get and Update, cannot assume schedule is a personal schedule, need to check that. 
 
-//TODO Fix erorr where events are in wrong format in guest
-
-//TODO Find out why guest events are not getting placed
 
 function ScheduleHolder({scheduleId}) {
 
-//  console.log("schedule id", scheduleId);
 
+  //TODO: Some of this code was written before guest schedule was always zero, and thus can probably be simplified. 
 
  const userData = useContext(UserContext);
-  // console.log(userData);
+
   
 
   const settings = {
@@ -55,42 +49,30 @@ function ScheduleHolder({scheduleId}) {
       // setCalendar
       setCalendar({id: 0, schedule_name: "", personal_schedule: 1});
 
-  
-      //!! Temp test
-      // localStorage.removeItem("guestEvents");
 
       // Temp, put this somewhere else conditional on it being undefined.
       // localStorage.setItem("guestEvents", JSON.stringify([]));
 
-      //!!! Temp changed for seed data testing
       triggerLoadReorder(true);
-
-
-      //Real version
-      // if (response.data.personal_schedule) {
-      //   triggerLoadReorder(true);
-      // } else {
-      //   getEvents(true);
-      // }
+    
       
     } else {
     axios.get(url + "/schedules/"  + scheduleId)
     .then((response) => {
-      // console.log(response.data);
+
       setCalendar(response.data);
   
-    
-      console.log("getCalendar", response.data);
+
       //!!! Temp changed for seed data testing
-      triggerLoadReorder(response.data.personal_schedule);
+      // triggerLoadReorder(response.data.personal_schedule);
 
 
       //Real version
-      // if (response.data.personal_schedule) {
-      //   triggerLoadReorder(response.data.personal_schedule);
-      // } else {
-      //   getEvents(response.data.personal_schedule);
-      // }
+      if (response.data.personal_schedule) {
+        triggerLoadReorder(response.data.personal_schedule);
+      } else {
+        getEvents(response.data.personal_schedule);
+      }
     })
     .catch((err) => {
       console.log("Error retrieving calendar", err);
@@ -103,16 +85,13 @@ function ScheduleHolder({scheduleId}) {
 
 const getEvents = (personalSchedule) => {
   
-  console.log(personalSchedule);
 
-  //TODO, figure out why userData.curr... doesn't use props
-  //It feels like that might be more accurate, or maybe not. Two differnet values that are sometimes the same
   if(userData.currentUser.scheduleId === 0 && personalSchedule) {
-    console.log("Guest getEvents");
+
     setEventsList(convertToDate(JSON.parse(localStorage.guestEvents)));
 
   } else {
-    console.log("Axios getEvents");
+
     axios.get(url + "/schedules/" + scheduleId + "/events")
     .then((response) => {
 
@@ -129,13 +108,11 @@ const getEvents = (personalSchedule) => {
  const getWithoutUpdate = async (personalSchedule) => {
 
    let results;
-   console.log("Get without update");
-  console.log("GWO ps", personalSchedule);
 
     if(userData.currentUser.scheduleId === 0 && personalSchedule) {
       
       results = JSON.parse(localStorage.guestEvents);
-      console.log("GWO Guest", results);
+      
     } else {
       console.log("Axios called");
       await axios.get(url + "/schedules/" + scheduleId + "/events")
@@ -151,33 +128,18 @@ const getEvents = (personalSchedule) => {
     return results;
  }
 
-//TODO: Remove guest user version. Guest users should not call this. 
- //TODO: ALTER FOR GUEST USER
- //This creates a promise to update the event, and does not actually update it directly. 
- //TODO: See if there is a problem with this being called before schedule is set
+
  const updateEvent = (event) => {
    let id = event.id;
-  //  console.log("Update event", event);
 
-   if(userData.currentUser.scheduleId === 0 && calendar.personal_schedule) {
-   console.log("Guest user in updateEvent");
-   //Note for self: This failed to work because it needed to update the "backend" or localStorage
-    //TODO: Check if this works fine
-    //TODO: I Probably need to update local storage
-      return () => {for(var i in eventsList) {
-        if(eventsList[i].id === event.id) {
-          eventsList[i] = event;
-          break;
-        }
-      }};
 
-   } else {
+
       return axios.put(url + "/events/" + id, event)
       .then((response) => {
   
       })
       .catch(error => console.error(`Error: ${error}`))
-   }
+   
 
 
  }
@@ -197,12 +159,9 @@ const getEvents = (personalSchedule) => {
     });
     
 
-  let copyList = [...eventsList];
+    let copyList = [...eventsList];
 
-   copyList.splice(indexOfEvent, 1);
-
-  
-
+    copyList.splice(indexOfEvent, 1);
 
     localStorage.setItem("guestEvents", JSON.stringify(copyList));
   
@@ -224,10 +183,10 @@ const getEvents = (personalSchedule) => {
 
  const addEvent = (event) => {
  
-  console.log("Add event");
-  //TODO: Add Guest data to local storage. 
+
+
   let personalScheduleId = userData.currentUser.scheduleId;
-  // console.log(userData);
+
 
   let formEvent = {
     id: event.id,
@@ -243,25 +202,14 @@ const getEvents = (personalSchedule) => {
     color: event.color
   };
 
-  console.log("Added form event", formEvent);
+ 
   if(personalScheduleId === 0) {
-   console.log("Guest add");
 
-   //TODO: Problem here is obvious in hindsight
-   //It is using the 'eventList' from the calendar DOING the adding. Therefore, it is adding the entire contents of calendar, formatted improperly
-    // let allEvents2 = [...eventsList, formEvent];
+
     let allEvents = JSON.parse(localStorage.guestEvents);
-    //TODO Check if this being a shallow copy is a problem
+  
     localStorage.setItem("guestEvents", JSON.stringify([...allEvents, formEvent]));
-    console.log("Set");
-    console.log("In add, local storage", localStorage.guestEvents);
-  //   console.log(allEvents);
-  //  let stringOf = JSON.stringify([...allEvents]);
-  //  let unStringed = JSON.parse(stringOf);
-  //  console.log("Unstringed", unStringed);
-   
-  //  console.log(allEvents[0].start_time);
-  //  console.log(new Date(unStringed[0].start_time));
+
 
   } else {
    
@@ -270,7 +218,7 @@ const getEvents = (personalSchedule) => {
 
     axios.post(url + "/events", formEvent)
     .then((res) => {
-      // console.log("Post res", res);
+
     })
     .catch(error => console.error(`Error: ${error}`))
   }
@@ -278,7 +226,7 @@ const getEvents = (personalSchedule) => {
 
 
   //Reorganizes all dates
-  function reorganizeAll(unorganizedList) {
+function reorganizeAll(unorganizedList) {
    
     let startDate = new Date(settings.startDate);
     let allEvents = [];
@@ -299,21 +247,16 @@ const getEvents = (personalSchedule) => {
 
 
   async function triggerLoadReorder(personalSchedule) {
-    console.log("TLR", personalSchedule);
+    
     
    let allEvents = await getWithoutUpdate(personalSchedule);
-   console.log("TLR allEvents", allEvents);
+  
    let formEvents = convertToDate(allEvents);
-   console.log("TLR formEvents", formEvents);
-   let organized = reorganizeAll(formEvents);
-   console.log("TLR organized events", organized);
 
-   //I think problem is here. For guests, events are getting organized, but not updated in local storage
-   //It's probably simpler to not try and make it async because that causes weirdness, and instead just to have a different path here for guesets
+   let organized = reorganizeAll(formEvents);
+
 
    if(scheduleId === 0 && personalSchedule) {
-
-
 
     localStorage.setItem("guestEvents", JSON.stringify(organized));
     getEvents(personalSchedule);
@@ -337,16 +280,15 @@ const getEvents = (personalSchedule) => {
 
   }
 
- 
-  //TODO: Add new delete path for guest
+
   async function triggerDeleteReorder(deletedEvent) {
-   console.log("Trigger delete reorder");
+  
   
     if(scheduleId === 0)  {
 
-      console.log("GUest trigger DR");
+      
       let remainingEvents = JSON.parse(localStorage.guestEvents);
-      console.log("TDR RemainingEvents", remainingEvents);
+ 
       let formRemainingEvents = convertToDate(remainingEvents);
 
       let remainingOnDay = getEventsOnDay(formRemainingEvents, deletedEvent.start_time);
@@ -354,45 +296,28 @@ const getEvents = (personalSchedule) => {
       let dayNum = dateDiff(settings.startDate, deletedEvent.start_time);
       let organized = organizeEvents(remainingOnDay, dayNum);
 
-      console.log("TDR organized", organized);
 
-      //TODO, fix organization. note that 'organized' is correct
 
-      for(var fEvent in formRemainingEvents) {
-        for(var oEvent in organized) {
-          //WHY are both of these zero
-          console.log("fEvent", fEvent);
-          console.log("oEvent", oEvent);
-          if(fEvent.id === oEvent.id) {
-            console.log("Inside if");
-            fEvent = oEvent;
-            console.log("After fEvent", fEvent);
-          }
-        }
-      }
-
-      //Wait, do I need to reverse which loops is the outer loop. Yep. 
+ 
       for(let i = 0; i < organized.length; i++) {
         for(let j = 0; j < formRemainingEvents.length; j++) {
-          console.log("formEvent", formRemainingEvents[j]);
-          console.log("org event", organized[i]);
+        
 
           if(formRemainingEvents[j].id === organized[i].id) {
-            console.log("Inside for for if");
+           
             formRemainingEvents[j] = organized[i];
-            console.log(formRemainingEvents[j]);
             break;
           }
         }
       }
 
       localStorage.setItem("guestEvents", JSON.stringify(formRemainingEvents));
-      console.log("remaining events", formRemainingEvents);
+   
       getEvents(calendar.personal_schedule);
 
     } else {
     //TODO, add input
-    console.log("TDR else");
+
       let remainingEvents =  await getWithoutUpdate(calendar.personal_schedule);
       let formRemainingEvents = convertToDate(remainingEvents);
       
@@ -405,7 +330,7 @@ const getEvents = (personalSchedule) => {
         return await updateEvent(event);
       })
 
-      console.log("In delete", calendar);
+
 
       Promise.all(promises)
       .then(() => {
