@@ -35,6 +35,8 @@ function Event({details, settings, deleteEvent, handleClick}) {
 
   // }, [eventRef]);
 
+  // console.log("Event details", details);
+
     let startTimeValue = details.start_time.getHours() +(details.start_time.getMinutes() /60);
     let endTimeValue = details.end_time.getHours() + (details.end_time.getMinutes() / 60);
     let length = endTimeValue - startTimeValue;

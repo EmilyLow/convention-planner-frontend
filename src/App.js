@@ -55,7 +55,7 @@ function App(props) {
   //TODO, update for context
   useEffect(() => {
     let storedValue = localStorage.getItem("loggedInUserId");
-   console.log("Use effect Stored value", storedValue);
+  //  console.log("Use effect Stored value", storedValue);
 
 
     if(storedValue != null) {
