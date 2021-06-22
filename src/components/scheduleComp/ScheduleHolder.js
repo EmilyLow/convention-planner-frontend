@@ -12,7 +12,10 @@ import organizeEvents from "../utils/organization";
 function ScheduleHolder({scheduleId}) {
 
 
+
   //TODO: Some of this code was written before guest schedule was always zero, and thus can probably be simplified. 
+
+
 
  const userData = useContext(UserContext);
 
@@ -114,12 +117,12 @@ const getEvents = (personalSchedule) => {
       results = JSON.parse(localStorage.guestEvents);
       
     } else {
-      console.log("Axios called");
+
       await axios.get(url + "/schedules/" + scheduleId + "/events")
       .then((response) => {
 
         results = response.data;
-        // console.log("GWO Axios", results);
+    
       })
       .catch(error => console.error(`Error: ${error}`))
 
@@ -186,10 +189,10 @@ const getEvents = (personalSchedule) => {
 
 
   let personalScheduleId = userData.currentUser.scheduleId;
+  console.log("personalScheduleId", personalScheduleId);
 
-
+ 
   let formEvent = {
-    id: event.id,
     event_name: event.event_name,
     schedule_id: personalScheduleId,
     speaker: event.speaker,
@@ -204,7 +207,8 @@ const getEvents = (personalSchedule) => {
 
  
   if(personalScheduleId === 0) {
-
+ 
+    formEvent = {...formEvent, id: event.id};
 
     let allEvents = JSON.parse(localStorage.guestEvents);
   
@@ -213,12 +217,12 @@ const getEvents = (personalSchedule) => {
 
   } else {
    
-    
+
 
 
     axios.post(url + "/events", formEvent)
     .then((res) => {
-
+      console.log(res);
     })
     .catch(error => console.error(`Error: ${error}`))
   }
