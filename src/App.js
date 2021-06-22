@@ -49,6 +49,7 @@ function App(props) {
 
   const [currentUser, setCurrentUser] = useState({userId: 0, scheduleId: 0, username: 'Guest'});
 
+  
 
   //Setting currentUser from localStorage on load
   //Possibly this should be done in useState intializing 
@@ -61,6 +62,11 @@ function App(props) {
     if(storedValue != null) {
       confirmCurrentUser(storedValue);
     }
+
+    if(localStorage.guestEvents === undefined) {
+      localStorage.setItem("guestEvents", JSON.stringify([]));
+    }
+    
 
     //Test changing this. If use 'currentUser' it initiates an infinite loops however
   }, []);
