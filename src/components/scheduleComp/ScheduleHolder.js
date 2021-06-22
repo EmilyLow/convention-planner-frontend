@@ -190,7 +190,7 @@ const getEvents = (personalSchedule) => {
    let personalScheduleId = userData.currentUser.scheduleId;
 
    if(personalScheduleId === 0) {
-     
+
     let indexOfEvent = eventsList.findIndex((i) => {
      return i.id === event.id
     
@@ -343,7 +343,7 @@ const getEvents = (personalSchedule) => {
    console.log("Trigger delete reorder");
   
     if(scheduleId === 0)  {
-      console.log("TDR if");
+
       console.log("GUest trigger DR");
       let remainingEvents = JSON.parse(localStorage.guestEvents);
       console.log("TDR RemainingEvents", remainingEvents);
@@ -356,10 +356,32 @@ const getEvents = (personalSchedule) => {
 
       console.log("TDR organized", organized);
 
+      //TODO, fix organization. note that 'organized' is correct
+
       for(var fEvent in formRemainingEvents) {
         for(var oEvent in organized) {
+          //WHY are both of these zero
+          console.log("fEvent", fEvent);
+          console.log("oEvent", oEvent);
           if(fEvent.id === oEvent.id) {
+            console.log("Inside if");
             fEvent = oEvent;
+            console.log("After fEvent", fEvent);
+          }
+        }
+      }
+
+      //Wait, do I need to reverse which loops is the outer loop. Yep. 
+      for(let i = 0; i < organized.length; i++) {
+        for(let j = 0; j < formRemainingEvents.length; j++) {
+          console.log("formEvent", formRemainingEvents[j]);
+          console.log("org event", organized[i]);
+
+          if(formRemainingEvents[j].id === organized[i].id) {
+            console.log("Inside for for if");
+            formRemainingEvents[j] = organized[i];
+            console.log(formRemainingEvents[j]);
+            break;
           }
         }
       }
