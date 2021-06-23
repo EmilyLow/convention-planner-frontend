@@ -41,7 +41,8 @@ const id = open ? "simple-popover" : undefined;
         'Sat'
     ];
 
-    
+    let gridBoxWidth = Math.round(20 * props.sizeMult) + 'px';
+  
     let hours = [];
 
    
@@ -93,7 +94,7 @@ const id = open ? "simple-popover" : undefined;
     }  
     return(
         
-        <ScheduleContainer settings={settings} width = {'20px'} num={3}> 
+        <ScheduleContainer settings={settings} width = {gridBoxWidth} num={3}> 
            
            
             {dayLabels}
@@ -139,6 +140,7 @@ const ScheduleContainer = styled.div`
     grid-template-rows: 80px repeat(${(props) => props.settings.hourNum * 4}, 10px);
   
     padding-right: 30px;
+    
    
 
   

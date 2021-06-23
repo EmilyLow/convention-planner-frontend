@@ -18,7 +18,7 @@ const useStyles = makeStyles( theme => ({
 
   }),}));
 
-function ScheduleHolder({scheduleId}) {
+function ScheduleHolder({scheduleId, sizeMult}) {
 
   const classes = useStyles();
 
@@ -409,7 +409,7 @@ const convertToDate = (rawEvents) => {
 
   return (
 
-  <Schedule className={classes.mainDiv} settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule}/>
+  <Schedule className={classes.mainDiv} settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule} sizeMult={sizeMult}/>
 
   );
 }
@@ -418,17 +418,3 @@ export default ScheduleHolder;
 
 
 
-const ScheduleDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-
-
-const LayoutDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-
-
-`;

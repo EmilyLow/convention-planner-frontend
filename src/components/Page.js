@@ -14,12 +14,13 @@ const useStyles = makeStyles( theme => ({
         justifyContent: 'center',
         marginTop: '40px',
         marginLeft: '30px',
+        marginBottom: '40px',
         
         
         overflowX: 'auto',
-      //Breakpoint: When < breakpoint, switch to justifyContent: flexStart
+     
       [theme.breakpoints.down('md')]: {
-        //backgroundColor: theme.palette.secondary.main,
+     
         justifyContent: 'flex-start'
       },
 
@@ -29,7 +30,7 @@ const useStyles = makeStyles( theme => ({
 }));
 
 
-export default function Home(props) {
+export default function Page(props) {
     const userData = useContext(UserContext);
     let scheduleId = props.scheduleId;
 
@@ -43,7 +44,7 @@ export default function Home(props) {
 
     return(
         <div className={classes.mainDiv}>
-            <ScheduleHolder scheduleId = {scheduleId} sizeMult={2}/>
+            <ScheduleHolder scheduleId = {scheduleId} sizeMult={props.sizeMult}/>
         </div>
     ) 
 }

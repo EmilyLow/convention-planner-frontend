@@ -149,19 +149,19 @@ function App(props) {
 
       <Switch>
         <Route path = "/core">
-          <Page scheduleId={1}/>
+          <Page scheduleId={1} sizeMult={1}/>
         </Route>
         <Route path="/talks">
-          <Page scheduleId={2}/>
+          <Page scheduleId={2} sizeMult={1}/>
         </Route>
         <Route path="/games">
-          <Page scheduleId={3}/>
+          <Page scheduleId={3} sizeMult={1}/>
         </Route>
         <Route path="/shows">
-          <Page scheduleId={4}/>
+          <Page scheduleId={4} sizeMult={1}/>
         </Route>
         <Route path = "/your-schedule">
-          <Page scheduleId ={0}/>
+          <Page scheduleId ={0} sizeMult={1}/>
         </Route>
         <Route path="/">
           <Home />

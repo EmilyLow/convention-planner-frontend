@@ -1,4 +1,4 @@
-import {useRef, useLayoutEffect} from "react";
+
 import styled from "styled-components";
 import React from "react";
 
@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
       padding: '4px 2px 0px 2px',
     
     
-    
       fontSize: '14px',
       textAlign: 'center',
       width: '100%',
@@ -25,28 +24,15 @@ const useStyles = makeStyles((theme) => ({
       
     
     },
-    abbreviateStyle: {
+    eventStyle: props => ({
+      backgroundColor: props.backgroundColor,
 
-    },
-    allowOverflowStyle: {
 
-    }
+    }),
   }));
   
 
 function Event({details, settings, deleteEvent, handleClick}) {
-
-  // const eventRef = React.createRef();
-
-
-  // useLayoutEffect(() => {
-  //   // if (eventRef.current.clientWidth < eventRef.current.scrollWidth) {
-  //   //   console.log(details.event_name + "has overflow");
-
-  //   // }
-  //   console.log(eventRef);
-
-  // }, [eventRef]);
 
 
     let startTimeValue = details.start_time.getHours() +(details.start_time.getMinutes() /60);
@@ -73,34 +59,12 @@ const EventStyle = styled.div`
 
     display: flex;
     justify-content: center;
-
-   // margin-left: 1px;
-   //border: 1px solid black;
-   margin: 1px;
+    margin: 1px;
    
   
 `;
 
 
-const Label = styled.p`
-  margin: 0px;
-  // padding-top: 4px;
-  padding: 4px 2px 0px 2px;
-  //display: flex;
-  //justify-content: center;
-  //align-items: center;
-
-
-  font-size: 14px;
-  text-align: center;
-  width: 100%;
-  //height: 100%;
-
-  overflow: hidden;
-  //overflow-y: hidden
-  
-
-`;
 
 
 
