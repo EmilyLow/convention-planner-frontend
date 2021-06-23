@@ -41,11 +41,15 @@ const useStyles = makeStyles( theme => ({
     }
   }),
   tabs: {
-    marginLeft: "auto",
-    marginRight: "auto"
+   
     //border: "1px red solid",
     // justifyContent: 'center',
     // alignItems: 'center'
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: "auto",
+      marginRight: "auto",
+      //justifyContent: "flex-start",
+    }
    
   },
  

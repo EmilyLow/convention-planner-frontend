@@ -9,8 +9,21 @@ const useStyles = makeStyles((theme) => ({
     typography: {
       padding: theme.spacing(2)
     },
-    color: {
+    label: {
       color: "#FFFAFA",
+      margin: '0px',
+      padding: '4px 2px 0px 2px',
+    
+    
+    
+      fontSize: '14px',
+      textAlign: 'center',
+      width: '100%',
+    
+      wordBreak: 'break-word',
+      overflow: 'hidden',
+      
+    
     },
     abbreviateStyle: {
 
@@ -47,7 +60,7 @@ function Event({details, settings, deleteEvent, handleClick}) {
       
         <EventStyle  onClick={ e => handleClick(e, details)} details={details} startTimeValue = {startTimeValue} endTimeValue = {endTimeValue} length = {length} startHour = {settings.startHour}>
 
-            <Label className={classes.color}>{details.event_name}</Label>
+            <p className={classes.label}>{details.event_name}</p>
         </EventStyle>
     );
 }
