@@ -13,8 +13,8 @@ const useStyles = makeStyles( theme => ({
 
   //I think I don't need to style in this component but I'm not sure
   mainDiv: props => ({
-      margin: 'auto',
-      border: '2px solid green',
+      // margin: 'auto',
+      // border: '2px solid green',
 
   }),}));
 

@@ -137,10 +137,12 @@ const ScheduleContainer = styled.div`
     grid-template-columns: 50px repeat(calc(12 * ${(props) => props.settings.dayNum}), ${(props) => props.width});
     //grid-template-columns: 50px repeat(calc(12 * ${(props) => props.settings.dayNum}), 20px);
     grid-template-rows: 80px repeat(${(props) => props.settings.hourNum * 4}, 10px);
-    //overflow-x: 'auto';
+  
+    padding-right: 30px;
+   
 
-    margin: 'auto'
-   // border: 3px solid red;
+  
+
 `;
 
 const Hour = styled.div`

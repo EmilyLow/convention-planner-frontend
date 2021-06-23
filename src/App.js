@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import '@fontsource/roboto';
 import Box from '@material-ui/core/Box';
 import AppBar from "@material-ui/core/AppBar";
@@ -12,6 +12,7 @@ import UserContext from "./components/utils/UserContext";
 import axios from "axios";
 
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import {
   BrowserRouter as Router,
@@ -33,7 +34,20 @@ const useStyles = makeStyles( theme => ({
     display: "flex",
     justifyContent: "space-between",
     //border: '1px solid red'
+     [theme.breakpoints.down("xs")]: {
+      padding: '10px',
+      flexDirection: "column",
+      //justifyContent: "flex-start",
+    }
   }),
+  tabs: {
+    marginLeft: "auto",
+    marginRight: "auto"
+    //border: "1px red solid",
+    // justifyContent: 'center',
+    // alignItems: 'center'
+   
+  },
  
 }));
 
@@ -42,6 +56,7 @@ function App(props) {
   //TODO Check local storage and useContext
 
   const classes = useStyles();
+  const mediumViewport = useMediaQuery('(min-width:500px)');
 
 
   const [currentUser, setCurrentUser] = useState({userId: 0, scheduleId: 0, username: 'Guest'});
@@ -115,8 +130,8 @@ function App(props) {
             <AuthBox/>
             
           </ToolBar>
-    
-          <Tabs  centered value={history.location.pathname !== "/" ? history.location.pathname
+          
+          <Tabs   className={classes.tabs} orientation={mediumViewport ? "horizontal" : "vertical"} centered value={history.location.pathname !== "/" ? history.location.pathname
                       : false} color="secondary">
             <Tab label = "Core" value={"/core"} component = {Link} to={"/core"}/>
             <Tab label = "Shows" value={"/shows"} component = {Link} to={"/shows"}/>
