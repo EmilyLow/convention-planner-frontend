@@ -93,7 +93,7 @@ const id = open ? "simple-popover" : undefined;
     }  
     return(
         
-        <ScheduleContainer settings={settings} num={3}> 
+        <ScheduleContainer settings={settings} width = {'20px'} num={3}> 
            
            
             {dayLabels}
@@ -134,10 +134,13 @@ export default Schedule;
 
 const ScheduleContainer = styled.div`
     display: grid;
-    grid-template-columns: 50px repeat(calc(12 * ${(props) => props.settings.dayNum}), 20px);
+    grid-template-columns: 50px repeat(calc(12 * ${(props) => props.settings.dayNum}), ${(props) => props.width});
+    //grid-template-columns: 50px repeat(calc(12 * ${(props) => props.settings.dayNum}), 20px);
     grid-template-rows: 80px repeat(${(props) => props.settings.hourNum * 4}, 10px);
+    //overflow-x: 'auto';
 
-  
+    margin: 'auto'
+   // border: 3px solid red;
 `;
 
 const Hour = styled.div`
@@ -181,7 +184,7 @@ const DayLabel = styled.div`
     
 
     background: 
-    linear-gradient(grey, grey)  bottom left / 1px 50% ;
+    linear-gradient(grey, grey)  bottom left / 1px 65% ;
    background-repeat:no-repeat;
 
    display: flex;

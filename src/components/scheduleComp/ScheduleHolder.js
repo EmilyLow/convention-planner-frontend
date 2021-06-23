@@ -7,10 +7,20 @@ import UserContext from "../utils/UserContext";
 
 import organizeEvents from "../utils/organization";
 
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles( theme => ({
+
+  //I think I don't need to style in this component but I'm not sure
+  mainDiv: props => ({
+      margin: 'auto',
+      border: '2px solid green',
+
+  }),}));
 
 function ScheduleHolder({scheduleId}) {
 
+  const classes = useStyles();
 
 
   //TODO: Some of this code was written before guest schedule was always zero, and thus can probably be simplified. 
@@ -398,11 +408,9 @@ const convertToDate = (rawEvents) => {
 
 
   return (
-    <LayoutDiv>
-      <ScheduleDiv>
-        <Schedule settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule}/>
-      </ScheduleDiv>
-    </LayoutDiv>
+
+  <Schedule className={classes.mainDiv} settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule}/>
+
   );
 }
 

@@ -30,6 +30,10 @@ const useStyles = makeStyles( theme => ({
           background: theme.palette.primary.main,
           color: theme.palette.secondary.main
 
+      }),
+      usernameStyle: props => ({
+          //margin: '10px',
+          marginRight: '10px',
       })
   }));
 
@@ -101,16 +105,7 @@ export default function AuthBox(props) {
     }  else {
         return (
             <Box className={classes.logInSpread}>
-             <Typography variant="h6" color="secondary"> {currentUser.username}   </Typography>
-            {/* <Dialog  open={logInOpen} onClose = {handleDialogueClose}>
-                <Box className = {classes.dialogStyle}>
-                    <DialogTitle>Log In</DialogTitle>
-                    <DialogContent>
-                        <LoginForm setCurrentUser = {props.setCurrentUser} handleClose={handleDialogueClose}/>
-                        <Link href="#" variant="p" color="secondary">Sign Up</Link>
-                    </DialogContent>
-            </Box>
-        </Dialog> */}
+             <Typography className={classes.usernameStyle} variant="h6" color="secondary">{currentUser.username}   </Typography>
         <Divider className={classes.divider}  orientation="vertical" variant = "fullWidth" flexItem />
               <Button color="secondary" onClick={handleLogOut}>Log Out</Button>
         </Box>

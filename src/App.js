@@ -32,8 +32,9 @@ const useStyles = makeStyles( theme => ({
   headerSpread: props => ({
     display: "flex",
     justifyContent: "space-between",
-
-  })
+    //border: '1px solid red'
+  }),
+ 
 }));
 
 function App(props) {
@@ -103,14 +104,14 @@ function App(props) {
   return (
     <UserContext.Provider value={{currentUser, setCurrentUser}}>
    <Router>
-    <Box>
+    <Box >
       <Route path="/"
         render={(history) => (
         <AppBar position="static" color="primary" >
           <ToolBar className={classes.headerSpread}>
-            <MUILink href="/" variant="h6" color="secondary">NecronomiCon</MUILink>
+            <MUILink href="/" variant="h4" color="secondary">NecronomiCon</MUILink>
 
-            {/* Removed currentUser = here */}
+           
             <AuthBox/>
             
           </ToolBar>
@@ -118,9 +119,9 @@ function App(props) {
           <Tabs  centered value={history.location.pathname !== "/" ? history.location.pathname
                       : false} color="secondary">
             <Tab label = "Core" value={"/core"} component = {Link} to={"/core"}/>
-            <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"} />
-            <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/>
             <Tab label = "Shows" value={"/shows"} component = {Link} to={"/shows"}/>
+            <Tab label = "Talks" value={"/talks"}  component = {Link} to={"/talks"} />
+            <Tab label = "Games" value={"/games"} component = {Link} to={"/games"}/> 
             <Tab label = "Your Schedule" value={"/your-schedule"} component = {Link} to={"/your-schedule"}/>
           </Tabs>
         </AppBar>
