@@ -65,8 +65,6 @@ function ScheduleHolder({scheduleId, sizeMult}) {
     })}
   }
 
- 
-
 
 
 const getEvents = (personalSchedule) => {
