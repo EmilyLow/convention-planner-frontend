@@ -32,17 +32,16 @@ const useStyles = makeStyles( theme => ({
 
       }),
       usernameStyle: props => ({
-          //margin: '10px',
           marginRight: '10px',
       })
   }));
 
 export default function AuthBox(props) {
 
-    //TODO : Fix
+
     const {currentUser, setCurrentUser} = useContext(UserContext);
 
-    //TODO: Logging in (without refreshing) does not update userContext
+  
 
 
     const classes = useStyles();
@@ -56,7 +55,6 @@ export default function AuthBox(props) {
             localStorage.setItem("token", "");
 
             localStorage.setItem("loggedInUserId", 0);
-            // console.log(localStorage);
         }
 
         const handleLogInOpen = () => {
@@ -65,8 +63,9 @@ export default function AuthBox(props) {
         }
 
         const handleSignUpOpen = () => {
-            setSignUpOpen(true);
             setLogInOpen(false);
+            setSignUpOpen(true);
+           
         }
         
           const handleDialogueClose = () => {
@@ -74,7 +73,7 @@ export default function AuthBox(props) {
             setSignUpOpen(false);
           }
 
-          //TODO switch to context
+
     if(currentUser.userId === 0) {
         return(
             <Box className={classes.logInSpread}>
@@ -84,8 +83,7 @@ export default function AuthBox(props) {
                     <DialogTitle className = {classes.dialogHeaderStyle}>Log In</DialogTitle>
                     <DialogContent>
                         <LoginForm setCurrentUser = {props.setCurrentUser} handleClose={handleDialogueClose}/>
-                        {/* Todo: Make this functional */}
-                        <Link href="#" variant="p" color="secondary">Sign Up</Link>
+                        <Button  color="secondary" onClick={handleSignUpOpen}>Sign Up</Button>
                     </DialogContent>
                 </Box>
             </Dialog>
