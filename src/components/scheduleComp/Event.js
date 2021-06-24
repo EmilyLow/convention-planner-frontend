@@ -1,4 +1,3 @@
-
 import styled from "styled-components";
 import React from "react";
 
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 
-function Event({details, settings, deleteEvent, handleClick}) {
+function Event({details, settings, handleClick}) {
 
 
     let startTimeValue = details.start_time.getHours() +(details.start_time.getMinutes() /60);
@@ -47,6 +46,7 @@ function Event({details, settings, deleteEvent, handleClick}) {
         <EventStyle  onClick={ e => handleClick(e, details)} details={details} startTimeValue = {startTimeValue} endTimeValue = {endTimeValue} length = {length} startHour = {settings.startHour}>
 
             <p className={classes.label}>{details.event_name}</p>
+
         </EventStyle>
     );
 }
