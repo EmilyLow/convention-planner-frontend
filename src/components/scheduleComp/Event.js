@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     label: {
       color: "#FFFAFA",
       margin: '0px',
-      padding: '4px 2px 0px 2px',
+      padding: '4px 2px 1px 2px',
     
     
       fontSize: '14px',

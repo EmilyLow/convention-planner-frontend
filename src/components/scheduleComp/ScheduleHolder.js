@@ -1,6 +1,6 @@
 import {useState, useEffect, useContext} from "react";
 import axios from 'axios';
-import styled from "styled-components";
+
 
 import Schedule from "./Schedule";
 import UserContext from "../utils/UserContext";
