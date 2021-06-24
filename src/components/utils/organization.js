@@ -1,6 +1,4 @@
 
-let colOffset = 2;
-
 
 
 /*

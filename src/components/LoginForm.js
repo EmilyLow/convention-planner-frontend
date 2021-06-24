@@ -33,7 +33,7 @@ export default function LoginForm(props) {
     const classes = useStyles();
     const {handleSubmit, control } = useForm();
 
-    const {currentUser, setCurrentUser} = useContext(UserContext);
+    const { setCurrentUser} = useContext(UserContext);
 
 
     const onSubmit = data => {

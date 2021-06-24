@@ -193,7 +193,6 @@ const getEvents = (personalSchedule) => {
 
     axios.post(url + "/events", formEvent)
     .then((res) => {
-      console.log(res);
     })
     .catch(error => console.error(`Error: ${error}`))
   }

@@ -39,7 +39,7 @@ export default function SignUpForm(props) {
     
 
     const classes = useStyles();
-    const {currentUser, setCurrentUser} = useContext(UserContext);
+    const {setCurrentUser} = useContext(UserContext);
     const {handleSubmit, control, watch } = useForm();
 
     let watchPassword = watch("password", "");
@@ -68,7 +68,7 @@ export default function SignUpForm(props) {
              
                 localStorage.setItem("loggedInUserId", res.data.id);
                
-                setCurrentUser({id: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id});
+                setCurrentUser({id: res.data.id, username: res.data.username, scheduleId: res.data.schedule_id});
                 props.handleClose();
                
                 
