@@ -50,7 +50,7 @@ function ScheduleHolder({scheduleId, sizeMult}) {
 
         setCalendar(response.data);
 
-        //! Can be used to reset positions of seed data
+        //Can be used to reset positions of seed data
         // triggerLoadReorder(response.data.personal_schedule);
 
         if (response.data.personal_schedule) {
