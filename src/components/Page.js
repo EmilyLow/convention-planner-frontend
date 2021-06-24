@@ -5,7 +5,7 @@ import UserContext from "./utils/UserContext";
 
 import { makeStyles } from '@material-ui/core/styles';
 
-//TODO: Enable side-scrolling if width exceeds page size
+
 const useStyles = makeStyles( theme => ({
 
     mainDivNormal: {
