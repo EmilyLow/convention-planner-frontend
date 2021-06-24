@@ -3,7 +3,9 @@ let colOffset = 2;
 
 
 
-//Note: This assumes all events will be on same day
+/*
+    Note: This function organizes events on a single day, and assumes inputs are on same day.
+*/
 function organizeEvents(rawEvents, dayNum) {
 
   
@@ -11,7 +13,7 @@ function organizeEvents(rawEvents, dayNum) {
         return [];
       }
 
-    //This removes the previous placement of events
+  //This removes the events previous placement
     let cleanEvents = [];
     rawEvents.forEach(event => {
         let newEvent = {...event, start_col: 0, span: 0};
@@ -38,6 +40,7 @@ function organizeEvents(rawEvents, dayNum) {
         //Checks to see if current event overlaps with previous group of intersecting events.
         //If not, it finalizes positions of previous group and starts new group.
         if(lastEventEnd !== null && new Date (currentEvent.start_time) > lastEventEnd) {
+            
             //Finalizes the positions of the previous group
             packEvents(columns, dayNum);
 
@@ -53,25 +56,19 @@ function organizeEvents(rawEvents, dayNum) {
 
         
         for (let i = 0; i < columns.length; i++) {
-            //Assuming empty columns are possible
            
             let last = columns[i][columns[i].length - 1];
-
-            
 
 
             if(last !== undefined && !checkTimeInt(last, currentEvent)) {
                
-                
        
                 currentEvent.span = 1;
                 currentEvent.start_col = i;
 
                 columns[i].push(currentEvent);
                 eventPlaced = true;
-                
 
-                
 
                 break;
             }
@@ -95,13 +92,11 @@ function organizeEvents(rawEvents, dayNum) {
 
     }
 
-
     if (columns.length > 0) {
 
         packEvents(columns, dayNum);
 
     }
-
 
  
     return sortedEvents;
@@ -116,19 +111,14 @@ function packEvents(columns, dayNum) {
     //Iterates through each column
     for (let i = 0; i < numColumns; i++) {
         //Iterates through each event in the column
-    
         for(let j = 0; j < columns[i].length; j++) {
 
-
-            //Attempt
-            //This attempt means the more elegant parts of this algorithm only work if events < 4, such as the parts to fill empty space
-            //Can this be fixed?
             let colAdjust = 2 + dayNum*12;
             let currentEvent = columns[i][j];
            
             if(numColumns <= 4) {
                 
-                let colSpan = expandEvent(currentEvent, i, columns);
+                 let colSpan = expandEvent(currentEvent, i, columns);
            
    
                 currentEvent.start_col = (i/numColumns) * 12 + colAdjust;
@@ -141,7 +131,6 @@ function packEvents(columns, dayNum) {
                 currentEvent.span = 1;
                 currentEvent.start_col = 1 * i + colAdjust;
             } else {
-                console.log("num columns", numColumns);
                 console.log("ERROR: No more than 12 overlapping events");
             }
 
@@ -158,14 +147,11 @@ function expandEvent(event, iColumn, columns) {
 
 
 
-    //Iterates through each column
-    for (let i = iColumn + 1; i < columns.length; i++) {
 
+    for (let i = iColumn + 1; i < columns.length; i++) {
         for(let j = 0; j < columns[i].length; j++) {
           
             let comEvent = columns[i][j];
-
-            
 
             if(checkPhysicalInt(event, comEvent)) {
 
@@ -174,7 +160,6 @@ function expandEvent(event, iColumn, columns) {
 
         }
 
-        
         colSpan++;
         event.span = colSpan;
 
@@ -191,8 +176,7 @@ function checkTimeInt(event1, event2) {
    let end1Copy = new Date(event1.end_time);
    let end2Copy = new Date(event2.end_time);
 
-    //Bumping back by one minute in calculations, to prevent intersections when things start and end in same hour
-    //Converted to new Date for readability when logging
+    //The calculations bump the end time back by one minute, to prevent a reported intersection when things start and end in same hour
     let altEnd1 = new Date(end1Copy.setMinutes(end1Copy.getMinutes() -1));
     let altEnd2 = new Date(end2Copy.setMinutes(end2Copy.getMinutes() -1));
 
@@ -207,50 +191,28 @@ function checkTimeInt(event1, event2) {
     }
 }
 
-//Find why this isn't working, and never returns true
-//I think maybe it also needs to check for time intersection?
+
 function checkPhysicalInt(event1, event2) {
 
 
-    // if(event1.id === 1073) {
-    //     console.log("--------")
-    //     console.log("Event1", event1.event_name);
-    //     console.log("Event2", event2.event_name);
-    // }
     if(event1.span === 0 || event2.span === 0) {
         console.log("Error! Undefined physical placement when checking intersection");
     }
 
     if(checkTimeInt(event1, event2) === false) {
-        // if(event1.id === 1073) console.log("Time false")
-        // console.log("Time false");
         return false;
     } else {
 
-                //Subtracted by 0.1 so shared boundaries don't count as intersection.
-                //Removed .01 subtraction to test
+
                 let end_col1 = event1.start_col + event1.span;
                 let end_col2 = event2.start_col + event2.span;
         
                 let maxStart = max(event1.start_col, event2.start_col);
                 let minEnd = min(end_col1, end_col2);
-                // if(event1.id === 1073) console.log("maxStart", maxStart);
-                // if(event1.id === 1073) console.log("minEnd", minEnd);
-
-                // if(event1.id === 1073) {
-                //     console.log("Event 1 start_col",event1.start_col );
-                //     console.log("Event 1 end col", end_col1);
-                //     console.log("Event 2 start_col",event2.start_col );
-                //     console.log("Event 2 end col", end_col2);
-                // }
         
                 if(maxStart <= minEnd) {
-                    // console.log("True");
-                    // if(event1.id === 1073) console.log("True")
                     return true;
                 } else {
-                    // if(event1.id === 1073) console.log("False")
-                    // console.log("False");
                     return false;
                 }
     }
