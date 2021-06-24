@@ -51,7 +51,7 @@ function App(props) {
 
 
   const classes = useStyles();
-  const mediumViewport = useMediaQuery('(min-width:450px)');
+  const mediumViewport = useMediaQuery('(min-width:600px)');
 
 
   const [currentUser, setCurrentUser] = useState({userId: 0, scheduleId: 0, username: 'Guest'});

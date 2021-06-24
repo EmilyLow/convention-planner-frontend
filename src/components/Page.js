@@ -19,6 +19,9 @@ const useStyles = makeStyles( theme => ({
         
         overflowX: 'auto',
      
+        //TODO: Make conditional on sizeMult
+        //Probably two differnet styles and which one is conditional?
+
       [theme.breakpoints.down('md')]: {
      
         justifyContent: 'flex-start'
