@@ -37,8 +37,6 @@ export default function LoginForm(props) {
 
 
     const onSubmit = data => {
-        console.log("Click");
-        console.log(data);
  
         logInUser(data);
 

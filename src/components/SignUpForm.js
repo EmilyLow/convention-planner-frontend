@@ -1,4 +1,7 @@
 
+import { useContext} from "react";
+import UserContext from "./utils/UserContext";
+
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,23 +15,17 @@ const useStyles = makeStyles( theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        // justifyContent: 'center',
-        // width: `100%`,
+ 
      
         padding: theme.spacing(2)
       },
-    dialogStyle: props => ({
-    //   background: theme.palette.primary.main,
-    //   color: theme.palette.primary.contrastText,
-    }),
+
     textFieldStyle: props => ({
         padding: theme.spacing(1)
-        // background: "#FFFFFF", //White
-        // padding: theme.spacing(1),
+
     }),
     buttonStyle: props => ({
         padding: theme.spacing(1)
-        // color: "#FFFFFF" //White
     }),
     logInSpread: props => ({
         display: "flex",
@@ -39,8 +36,10 @@ const useStyles = makeStyles( theme => ({
   }));
 
 export default function SignUpForm(props) {
+    
 
     const classes = useStyles();
+    const {currentUser, setCurrentUser} = useContext(UserContext);
     const {handleSubmit, control, watch } = useForm();
 
     let watchPassword = watch("password", "");
@@ -52,15 +51,12 @@ export default function SignUpForm(props) {
 
     };  
 
-    //TODO: Alert user if username is taken
-    //TODO: Fix formatting on logged in name
+
     const signUpUser = (values) => {
 
 
         let userData = {username: values.username, password: values.password};
 
-        
-        
         axios.post("http://localhost:3002/users/auth/register", userData) 
         .then((res) => {
           
@@ -69,10 +65,10 @@ export default function SignUpForm(props) {
             .then((res) => {
 
                 localStorage.setItem("token", res.data.token);
-                // localStorage.setItem("loggedInUser", res.data.username);
+             
                 localStorage.setItem("loggedInUserId", res.data.id);
-            
-                props.setCurrentUser({id: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id});
+               
+                setCurrentUser({id: res.data.id, username: res.data.username, schedule_id: res.data.schedule_id});
                 props.handleClose();
                
                 
@@ -110,7 +106,7 @@ export default function SignUpForm(props) {
                             <TextField
                                 label="Username"
                                 className = {classes.textFieldStyle}
-                                // variant="filled"
+                               
                                 value={value}
                                 onChange={onChange}
                                 error={!!error}
@@ -127,7 +123,7 @@ export default function SignUpForm(props) {
                             <TextField
                                 label="Password"
                                 className = {classes.textFieldStyle}
-                                // variant="filled"
+                                
                                 type="password"
                                 value={value}
                                 onChange={onChange}
@@ -145,7 +141,7 @@ export default function SignUpForm(props) {
                             <TextField
                                 label="Confirm Password"
                                 className = {classes.textFieldStyle}
-                                // variant="filled"
+                                
                                 type="password"
                                 value={value}
                                 onChange={onChange}

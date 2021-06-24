@@ -82,7 +82,7 @@ export default function AuthBox(props) {
                 <Box className = {classes.dialogStyle}>
                     <DialogTitle className = {classes.dialogHeaderStyle}>Log In</DialogTitle>
                     <DialogContent>
-                        <LoginForm setCurrentUser = {props.setCurrentUser} handleClose={handleDialogueClose}/>
+                        <LoginForm handleClose={handleDialogueClose}/>
                         <Button  color="secondary" onClick={handleSignUpOpen}>Sign Up</Button>
                     </DialogContent>
                 </Box>
