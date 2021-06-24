@@ -13,6 +13,15 @@ import Button from "@material-ui/core/Button";
 function ContentPane({details, addEvent, deleteEvent, handleClose, personalSchedule}) {
   
     
+    const days = [
+        'Sun',
+        'Mon',
+        'Tue',
+        'Wed',
+        'Thu',
+        'Fri',
+        'Sat'
+    ];
 
    
     
@@ -29,15 +38,6 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
         }
     }
 
-    const days = [
-        'Sun',
-        'Mon',
-        'Tue',
-        'Wed',
-        'Thu',
-        'Fri',
-        'Sat'
-    ];
 
     let formattedStart;
     let formattedEnd;
@@ -55,7 +55,7 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
         formattedTime = formattedStart + " to " + formattedEnd + ", " + formattedDate;
     }
 
-    //TODO Change
+   
     function deleteAction() {
   
         handleClose();
@@ -63,7 +63,7 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
         
     }
 
-    //TODO Add addEvent;
+ 
     function addAction() {
 
         handleClose();
@@ -82,8 +82,6 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
 
     return(<EventDiv>
         <Grid container>
-            {/* Note: Temporary for testing */}
-            {/* <Grid><p>{details.id}</p></Grid> */}
              <Grid item xs={12}> <Typography variant={'h5'}>{details.event_name}</Typography> </Grid>
              <Grid item xs={12}><Typography variant={'subtitle1'}> {formattedTime}</Typography> </Grid>
 
@@ -99,7 +97,6 @@ function ContentPane({details, addEvent, deleteEvent, handleClose, personalSched
 
             { details.summary !== "" && <Grid item xs = {2}><Subject/> </Grid>}
             { details.summary !== "" && <Grid item xs = {10}><Typography variant = {'body1'}>{details.summary}</Typography></Grid>}
-            {/* ToDo: Switch to remove button if event is added to a user schedule  */}
            <Grid>
                
                {getButton(personalSchedule)}
