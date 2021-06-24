@@ -1,4 +1,4 @@
-import Box from "@material-ui/core/Box";
+
 import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import Typography  from "@material-ui/core/Typography";
@@ -8,12 +8,10 @@ const useStyles = makeStyles( theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        // justifyContent: 'center',
-        // width: `100%`,
      
         padding: theme.spacing(2)
       },
-    boxStyle: props => ({
+    boxStyle: {
         margin: '0 auto',
         
         width: '70%',
@@ -26,7 +24,7 @@ const useStyles = makeStyles( theme => ({
             width: '90%',
             marginTop: '30px',
           }, 
-    }),
+    },
     titleStyle: {
         marginBottom: '30px',
     },
@@ -45,7 +43,7 @@ export default function Home() {
     return(
         <Paper outlined className={classes.boxStyle}>
          
-            <Typography  className={classes.titleStyle} variant="h3" component="h1"> Welcome to NecronomiCon Providence </Typography>
+            <Typography  className={classes.titleStyle} variant="h3" component="h1"> Welcome to Necronomi&shy;Con Providence </Typography>
             <Typography  variant="h6" component="p">A bi-yearly convention celebrating weird fiction.</Typography>
 
             <Typography className={classes.subTitleStyle}  variant="h4" component="h2">Plan your visit today</Typography>
