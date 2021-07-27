@@ -4,7 +4,7 @@ import {useContext} from "react";
 import UserContext from "./utils/UserContext";
 
 import { makeStyles } from '@material-ui/core/styles';
-
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles( theme => ({
 
@@ -42,6 +42,14 @@ const useStyles = makeStyles( theme => ({
           },
      
       },
+
+      clearButton: {
+          maxWidth: '150px',
+          maxHeight: '100px',
+          padding: '10px',
+          color: theme.palette.secondary.main,
+          backgroundColor: theme.palette.primary.main
+      }
         
     
 }));
@@ -53,6 +61,12 @@ export default function Page(props) {
 
     const classes = useStyles();
 
+    let clearButton = <></>; 
+
+  if(scheduleId === 0) {
+      clearButton = <Button  variant="contained" className={classes.clearButton}>Clear Schedule</Button>
+  }
+
     if(scheduleId === 0) {
       
         scheduleId = userData.currentUser.scheduleId;
@@ -61,12 +75,17 @@ export default function Page(props) {
     if(props.sizeMult <= 1) {
         return(
             <div className={classes.mainDivNormal}>
+                <div>
+                {clearButton}
+                </div>
+                
                 <ScheduleHolder scheduleId = {scheduleId} sizeMult={props.sizeMult} url={props.url}/>
             </div>
         ) 
     } else {
         return(
             <div className={classes.mainDivLarge}>
+               <div>{clearButton}</div> 
                 <ScheduleHolder scheduleId = {scheduleId} sizeMult={props.sizeMult} url={props.url}/>
             </div>
         ) 
