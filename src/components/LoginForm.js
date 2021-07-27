@@ -45,7 +45,7 @@ export default function LoginForm(props) {
     const logInUser = (values) => {
 
         axiosWithAuth()
-        .post("http://localhost:3002/users/auth/login", values)
+        .post(props.url  + "/users/auth/login", values)
         .then((res) => {
        
 

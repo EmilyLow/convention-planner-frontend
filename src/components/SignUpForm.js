@@ -57,11 +57,11 @@ export default function SignUpForm(props) {
 
         let userData = {username: values.username, password: values.password};
 
-        axios.post("http://localhost:3002/users/auth/register", userData) 
+        axios.post(props.url + "/users/auth/register", userData) 
         .then((res) => {
           
             axiosWithAuth()
-            .post("http://localhost:3002/users/auth/login", userData)
+            .post(props.url + "/users/auth/login", userData)
             .then((res) => {
 
                 localStorage.setItem("token", res.data.token);
