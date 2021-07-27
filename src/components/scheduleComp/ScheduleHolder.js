@@ -9,13 +9,12 @@ import organizeEvents from "../utils/organization";
 
 
 
-function ScheduleHolder({scheduleId, sizeMult}) {
+function ScheduleHolder({scheduleId, sizeMult, url}) {
 
-
+  console.log(url);
   const userData = useContext(UserContext);
 
-  const url = 'http://localhost:3002';
-
+  
   const settings = {
     dayNum: 4,
     hourNum: 16,

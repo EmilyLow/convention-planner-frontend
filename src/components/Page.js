@@ -61,13 +61,13 @@ export default function Page(props) {
     if(props.sizeMult <= 1) {
         return(
             <div className={classes.mainDivNormal}>
-                <ScheduleHolder scheduleId = {scheduleId} sizeMult={props.sizeMult}/>
+                <ScheduleHolder scheduleId = {scheduleId} sizeMult={props.sizeMult} url={props.url}/>
             </div>
         ) 
     } else {
         return(
             <div className={classes.mainDivLarge}>
-                <ScheduleHolder scheduleId = {scheduleId} sizeMult={props.sizeMult}/>
+                <ScheduleHolder scheduleId = {scheduleId} sizeMult={props.sizeMult} url={props.url}/>
             </div>
         ) 
     }

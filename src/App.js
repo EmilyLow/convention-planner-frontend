@@ -53,6 +53,9 @@ function App(props) {
   const classes = useStyles();
   const mediumViewport = useMediaQuery('(min-width:600px)');
 
+  // const url = 'http://localhost:3002';
+  const url = 'https://convention-planner-backend.herokuapp.com';
+  //Url also present in axiosWithAuth
 
   const [currentUser, setCurrentUser] = useState({userId: 0, scheduleId: 0, username: 'Guest'});
 
@@ -113,7 +116,7 @@ function App(props) {
             <MUILink href="/" variant="h4" color="secondary">NecronomiCon</MUILink>
 
            
-            <AuthBox/>
+            <AuthBox url={url}/>
             
           </ToolBar>
           
@@ -131,19 +134,19 @@ function App(props) {
 
       <Switch>
         <Route path = "/core">
-          <Page scheduleId={1} sizeMult={1}/>
+          <Page scheduleId={1} sizeMult={1} url={url}/>
         </Route>
         <Route path="/talks">
-          <Page scheduleId={2} sizeMult={1.5}/>
+          <Page scheduleId={2} sizeMult={1.5} url={url}/>
         </Route>
         <Route path="/games">
-          <Page scheduleId={3} sizeMult={1.5}/>
+          <Page scheduleId={3} sizeMult={1.5} url={url}/>
         </Route>
         <Route path="/shows">
-          <Page scheduleId={4} sizeMult={1}/>
+          <Page scheduleId={4} sizeMult={1} url={url}/>
         </Route>
         <Route path = "/your-schedule">
-          <Page scheduleId ={0} sizeMult={1}/>
+          <Page scheduleId ={0} sizeMult={1} url={url}/>
         </Route>
         <Route path="/">
           <Home />
