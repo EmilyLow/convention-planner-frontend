@@ -11,7 +11,7 @@ import organizeEvents from "../utils/organization";
 
 function ScheduleHolder({scheduleId, sizeMult, url}) {
 
-  console.log(url);
+
   const userData = useContext(UserContext);
 
   
