@@ -47,7 +47,7 @@ export default function Home() {
             <Typography  variant="h6" component="p">A bi-yearly convention celebrating weird fiction.</Typography>
 
             <Typography className={classes.subTitleStyle}  variant="h4" component="h2">Plan your visit today</Typography>
-            <Typography  variant="body1" component="p">View the schedules for each type of event by clicking the tabs above, and then events that interest you to your own personal schedule. Sign up to access your schedule anywhere.</Typography>
+            <Typography  variant="body1" component="p">View the schedules for each type of event by clicking the tabs above, and then add the events that interest you to your own personal schedule. Sign up to access your schedule anywhere.</Typography>
 
            <Typography className = {classes.addendumStyle} variant="body2" component="p"> Go to the NecronomiCon's <Link color='secondary' href='http://necronomicon-providence.com/welcome/'>Official Website</Link> </Typography> 
 
