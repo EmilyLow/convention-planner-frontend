@@ -35,9 +35,16 @@ function organizeEvents(rawEvents, dayNum) {
 
         let currentEvent = sortedEvents[i];
 
+        let adjustedEnd = null;
+        if(lastEventEnd != null) {
+             //The calculations bump the end time back by one minute, to prevent a reported intersection when things start and end in same hour.
+            adjustedEnd = new Date(lastEventEnd.setMinutes(lastEventEnd.getMinutes() -1));
+        }
+
+
         //Checks to see if current event overlaps with previous group of intersecting events.
         //If not, it finalizes positions of previous group and starts new group.
-        if(lastEventEnd !== null && new Date (currentEvent.start_time) > lastEventEnd) {
+        if(lastEventEnd !== null && new Date (currentEvent.start_time) > adjustedEnd) {
             
             //Finalizes the positions of the previous group
             packEvents(columns, dayNum);
