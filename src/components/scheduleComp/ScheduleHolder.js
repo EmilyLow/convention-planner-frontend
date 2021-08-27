@@ -6,12 +6,24 @@ import Schedule from "./Schedule";
 import UserContext from "../utils/UserContext";
 
 import organizeEvents from "../utils/organization";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles( theme => ({
+
+  loadStyle:{
+   marginTop: '100px',
+   marginLeft: 'auto',
+   marginRight: 'auto'
+  }
+
+
+}));
 
 
 function ScheduleHolder({scheduleId, sizeMult, url}) {
 
-
+  const classes = useStyles();
   const userData = useContext(UserContext);
 
   
@@ -24,6 +36,7 @@ function ScheduleHolder({scheduleId, sizeMult, url}) {
  
   const [eventsList, setEventsList] = useState([]);
   const [calendar, setCalendar] = useState({});
+  const [fetchInProgress, setFetchInProgress] = useState(false);
 
 
 
@@ -43,10 +56,14 @@ function ScheduleHolder({scheduleId, sizeMult, url}) {
       triggerLoadReorder(true);
       
     } else {
+      if(eventsList.length === 0) {
+        setFetchInProgress(true);
+      }
+      
 
       axios.get(url + "/schedules/"  + scheduleId)
       .then((response) => {
-
+        
         setCalendar(response.data);
 
         //Can be used to reset positions of seed data
@@ -57,7 +74,7 @@ function ScheduleHolder({scheduleId, sizeMult, url}) {
         } else {
           getEvents(response.data.personal_schedule);
         }
-
+        setFetchInProgress(false);
     })
     .catch((err) => {
       console.log("Error retrieving calendar", err);
@@ -75,6 +92,7 @@ const getEvents = (personalSchedule) => {
 
   } else {
 
+    
     axios.get(url + "/schedules/" + scheduleId + "/events")
     .then((response) => {
 
@@ -97,9 +115,10 @@ const getEvents = (personalSchedule) => {
       
     } else {
 
+      
       await axios.get(url + "/schedules/" + scheduleId + "/events")
       .then((response) => {
-
+       
         results = response.data;
     
       })
@@ -115,10 +134,10 @@ const getEvents = (personalSchedule) => {
    let id = event.id;
 
 
-
+ 
    return axios.put(url + "/events/" + id, event)
           .then((response) => {
-  
+       
           })
           .catch(error => console.error(`Error: ${error}`))
    
@@ -150,9 +169,11 @@ const getEvents = (personalSchedule) => {
 
   } else {
 
+    
     axios.delete(url + "/events/" + eventId)
     .then((response) => {
       triggerDeleteReorder(event);
+     
     })
     .catch(error => console.error(`Error: ${error}`))
 
@@ -189,9 +210,10 @@ const getEvents = (personalSchedule) => {
 
   } else {
 
-
+    
     axios.post(url + "/events", formEvent)
     .then((res) => {
+      
     })
     .catch(error => console.error(`Error: ${error}`))
   }
@@ -349,13 +371,13 @@ const convertToDate = (rawEvents) => {
 }
 
 
-
-
-  return (
-
-  <Schedule settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule} sizeMult={sizeMult}/>
-
-  );
+  if(fetchInProgress) {
+    return (<CircularProgress className={classes.loadStyle} size='80px' thickness='3.2'/>)
+  } else {
+    return(
+    <Schedule settings = {settings} eventsList = {eventsList} addEvent = {addEvent} deleteEvent={deleteEvent} personalSchedule={calendar.personal_schedule} sizeMult={sizeMult}/>)
+  }
+  
 }
 
 export default ScheduleHolder;
